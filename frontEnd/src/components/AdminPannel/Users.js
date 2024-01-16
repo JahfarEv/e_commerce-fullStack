@@ -1,11 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { shopContext } from "../../App";
 import Sidebar from "../Sidebar";
 import { Table } from "react-bootstrap";
+import axios from "axios";
 
-const Users = async() => {
-const { user } = useContext(shopContext);
-
+const Users = () => {
+// const { user } = useContext(shopContext);
+const [user,setUser] = useState([])
+useEffect(()=>{
+const users = async ()=>{
+  try {
+    const response = await axios.get('http://127.0.0.1:4000/api/admin/users');
+    console.log(response.data);
+    if(response.status === 200){
+      setUser(response.data.data.AllUsers)
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+users()
+},[])
 
   return (
     <div style={{ display: "flex" }}>
@@ -22,8 +37,8 @@ const { user } = useContext(shopContext);
           {user.map((item) => (
             <tbody>
               <tr>
-                <td>{item.newName}</td>
-                <td>{item.newEmail}</td>
+                <td>{item.name}</td>
+                <td>{item.email}</td>
               </tr>
             </tbody>
           ))}

@@ -1,16 +1,54 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import Sidebar from "../Sidebar";
 import { useNavigate } from "react-router-dom";
 import { shopContext } from "../../App";
+import axios from "axios";
 
 const ProductList = () => {
   const navigate = useNavigate();
-  const { product, setProduct } = useContext(shopContext);
-  const removeItem = (id) => {
-    const removeData = product.filter((item) => item.id !== id);
-    setProduct(removeData);
-  };
+
+  const [product,setProduct] = useState([])
+
+  const viewProduct = async()=>{
+    try {
+      const response = await axios.get('http://127.0.0.1:4000/api/admin/view');
+      console.log(response.data.data.products);
+      if(response.status === 200){
+        setProduct(response.data.data.products)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+viewProduct()
+  },[])
+
+
+    const removeItem = async(id)=>{
+try {
+  const productId = id;
+  const response = await axios.delete('http://127.0.0.1:4000/api/admin/products',{
+    data:{
+      productId:productId
+    }
+  }
+    );
+    viewProduct()
+    console.log(response.data);
+
+
+} catch (error) {
+  console.log(error);
+}
+    }
+  
+  // const { product, setProduct } = useContext(shopContext);
+  // const removeItem = (id) => {
+  //   const removeData = product.filter((item) => item.id !== id);
+  //   setProduct(removeData);
+  // };
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
@@ -28,13 +66,13 @@ const ProductList = () => {
           {product.map((item) => (
             <tbody>
               <tr>
-                <td>{item.id}</td>
-                <td>{item.productName}</td>
+                <td>{item._id}</td>
+                <td>{item.title}</td>
                 <td>{item.price}</td>
                 <td>
                   <img
                     style={{ height: "3rem" }}
-                    src={item.productImage}
+                    src={item.Image}
                     alt="productlist"
                   />
                 </td>
@@ -42,13 +80,13 @@ const ProductList = () => {
                   <Button
                     style={{ backgroundColor: "black", border: "none" }}
                     className="m-2"
-                    onClick={() => navigate(`/edit/${item.id}`)}
+                    onClick={() => navigate(`/edit/${item._id}`)}
                   >
                     Edit
                   </Button>
                   <Button
                     style={{ backgroundColor: "black", border: "none" }}
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeItem(item._id)}
                   >
                     Delete
                   </Button>

@@ -36,22 +36,29 @@ const [viewProduct,setViewProduct] = useState([])
 useEffect(()=>{
   const viewProduct =async ()=>{
 try {
-  const response = await axios.get('http://127.0.0.1:4000/api/users/product/')
-  console.log(response.data);
+  const response = await axios.get(`http://127.0.0.1:4000/api/users/product/${id}`)
+  console.log(response.data.data.products);
+  if(response.status === 200){
+    setViewProduct(response.data.data.products)
+    toast.success('success')
+  }
 } catch (error) {
   console.log(error);
+  toast.error('Product not available')
   
 }
   }
   viewProduct()
 },[])
+const view = []
+view.push(viewProduct)
 
   return (
     <div style={{ backgroundColor: "#3c0747" }}>
       <Nav />
       <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
       <Container className="d-flex align-items-center justify-content-center ">
-        {viewProduct.map((item) => (
+        {view.map((item) => (
           <div className="mt-4">
             <Card
               key={item.id}

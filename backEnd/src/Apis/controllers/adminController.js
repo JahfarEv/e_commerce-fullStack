@@ -102,17 +102,17 @@ const createProduct = asyncErrorHandler(async (req, res) => {
 //delete product
 
 const deleteProduct = asyncErrorHandler(async (req, res) => {
-  const deleteId = req.params.id;
-  // console.log(deleteId);
+  const {productId} = req.body;
+  console.log(productId);
 
-  if (!deleteId || !mongoose.Types.ObjectId.isValid(deleteId)) {
+  if (!productId || !mongoose.Types.ObjectId.isValid(productId)) {
     return res.status(404).json({
       status: "error",
       message: "invalid product id provided",
     });
   }
 
-  const deleteproduct = await product.findOneAndDelete({ _id: deleteId });
+  const deleteproduct = await product.findOneAndDelete({ _id: productId });
   console.log(deleteproduct);
   if (!deleteproduct) {
     return res.status(404).json({
@@ -209,6 +209,27 @@ try {
 }
 }
 
+//viwe products
+
+const viewProduct = asyncErrorHandler (async (req,res)=>{
+
+  const products = await product.find()
+  if (!products) {
+    return res.status(404).json({
+      status: "error",
+      message: "product not found",
+    });
+  }
+  return res.status(200).json({
+    status: "succes",
+    message: "product fetched succesfully",
+    data: {
+      products,
+    },
+  });
+
+})
+
 //all products by category
 const allProduct = asyncErrorHandler(async (req, res, next) => {
   const category = req.params.category;
@@ -264,5 +285,6 @@ module.exports = {
   deleteProduct,
   updateProduct,
   createCategory,
+  viewProduct,
   categoryController
 };

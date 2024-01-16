@@ -67,7 +67,7 @@ try {
                   <span className="h4">{item.price}</span>
                 </Card.Title>
                 <Button
-                  onClick={() => navigate(`/view/${item.id}`)}
+                  onClick={() => navigate(`/view/${item._id}`)}
                   className={`d-flex align-item-center m-auto border-0`}
                 >
                   View Item
