@@ -5,22 +5,24 @@ import { Table } from "react-bootstrap";
 import axios from "axios";
 
 const Users = () => {
-// const { user } = useContext(shopContext);
-const [user,setUser] = useState([])
-useEffect(()=>{
-const users = async ()=>{
-  try {
-    const response = await axios.get('http://127.0.0.1:4000/api/admin/users');
-    console.log(response.data);
-    if(response.status === 200){
-      setUser(response.data.data.AllUsers)
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-users()
-},[])
+  // const { user } = useContext(shopContext);
+  const [user, setUser] = useState([]);
+  useEffect(() => {
+    const users = async () => {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:4000/api/admin/users"
+        );
+        console.log(response.data);
+        if (response.status === 200) {
+          setUser(response.data.data.AllUsers);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    users();
+  }, []);
 
   return (
     <div style={{ display: "flex" }}>

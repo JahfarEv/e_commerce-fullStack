@@ -38,7 +38,7 @@ const Sidebar = () => {
               <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/createCategory" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="items">Create Category</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="bookmark">Category</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/productList" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="table">Products</CDBSidebarMenuItem>
@@ -47,7 +47,7 @@ const Sidebar = () => {
               <CDBSidebarMenuItem icon="user">Users</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/add" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="plus">Add</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="plus">Add Product</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink

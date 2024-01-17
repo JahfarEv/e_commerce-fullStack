@@ -3,23 +3,14 @@ import Sidebar from "../Sidebar";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-// import { shopContext } from "../../App";
 import axios from "axios";
 import { Select } from "antd";
 const { Option } = Select;
 
 const AddProduct = () => {
   const navigate = useNavigate();
-  // const { product, setProduct } = useContext(shopContext);
-  // const [newProduct, setNewProduct] = useState({
-  //   id: product.length + 1,
-  //   productName: "",
-  //   price: "",
-  //   productImage: "",
-  //   category: "",
-  // });
 
-  const [title,setTitle] = useState("");
+  const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -46,76 +37,31 @@ const AddProduct = () => {
   }, []);
 
   //create product function
-  const handleCreate =async (e)=>{
-e.preventDefault()
-try {
-  const formData = new FormData()
-      formData.append("title",title)
-      formData.append("image",image)
-      formData.append("description",description)
-      formData.append("price",price)
-      formData.append("category",category)
-      formData.append("quantity",quantity)
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("image", image);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("category", category);
+      formData.append("quantity", quantity);
 
-  const response =await axios.post('http://127.0.0.1:4000/api/admin/addProduct',formData)
-  if(response.success){
-    toast.success('Product create successfully')
-    navigate('/ProductList')
-  }
-} catch (error) {
-  console.log(error);
-  toast.error('something went wrong')
-}
-  }
-  // const Change = (e) => {
-  //   const { name, value } = e.target;
-  //   setNewProduct({
-  //     ...newProduct,
-  //     [name]: value,
-  //   });
-  // };
-  //   const Submit = async(e) => {
-  //     e.preventDefault()
-  //     if(!title||!image||!description||!price||!category||!quantity){
-  //       toast.error('fill this field')
-  //     }
-  //     const formData = new FormData()
-  //     formData.append("title",title)
-  //     formData.append("image",image)
-  //     formData.append("description",description)
-  //     formData.append("price",price)
-  //     formData.append("category",category)
-  //     formData.append("quantity",quantity)
-  // try{
-  //     await axios.post('http://127.0.0.1:4000/api/admin/addProduct',formData).then((res)=>{
-  //       toast.success('Product added successfully')
-  // console.log(res);
-  //     }).catch((err)=>{
-  //       toast.error(err)
-  //     })
-  //   }
-  //   catch (error){
-  // console.log(error);
-  //   }
-  // if (
-  //   newProduct.productName &&
-  //   newProduct.price &&
-  //   newProduct.productImage &&
-  //   newProduct.category
-  // ) {
-  //   setProduct([...product, newProduct]);
-  //   setNewProduct({
-  //     id: product.length + 1,
-  //     productName: "",
-  //     price: "",
-  //     productImage: "",
-  //     category: "",
-  //   });
-  //   navigate("/productList");
-  // } else {
-  //   toast.error("Fill");
-  // }
-  // };
+      const response = await axios.post(
+        "http://127.0.0.1:4000/api/admin/addProduct",
+        formData
+      );
+      if (response.success) {
+        toast.success("Product create successfully");
+        navigate("/ProductList");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong");
+    }
+  };
+
   return (
     <div className="d-flex">
       <Sidebar />
@@ -175,164 +121,47 @@ try {
             )}
           </div>
           <div className="mb-3">
-          <input type="text" value={title}
-          placeholder="write a name"
-          className="form-control"
-          onChange={(e)=> setTitle(e.target.value)} />
-
+            <input
+              type="text"
+              value={title}
+              placeholder="write a name"
+              className="form-control"
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
           <div className="mb-3">
-          <textarea
-           type="text" value={description}
-          placeholder="write a description"
-          className="form-control"
-          onChange={(e)=> setDescription(e.target.value)} />
-
+            <textarea
+              type="text"
+              value={description}
+              placeholder="write a description"
+              className="form-control"
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           <div className="mb-3">
-          <input type="number" value={price}
-          placeholder="write a Price"
-          className="form-control"
-          onChange={(e)=> setPrice(e.target.value)} />
-
+            <input
+              type="number"
+              value={price}
+              placeholder="write a Price"
+              className="form-control"
+              onChange={(e) => setPrice(e.target.value)}
+            />
           </div>
           <div className="mb-3">
-          <input type="number" value={quantity}
-          placeholder="write a quantity"
-          className="form-control"
-          onChange={(e)=> setQuantity(e.target.value)} />
-
+            <input
+              type="number"
+              value={quantity}
+              placeholder="write a quantity"
+              className="form-control"
+              onChange={(e) => setQuantity(e.target.value)}
+            />
           </div>
           <div className="mb-3">
-            <button className="btn btn-primary" onClick={handleCreate}>CREATE PRODUCT</button>
+            <button className="btn btn-primary" onClick={handleCreate}>
+              CREATE PRODUCT
+            </button>
           </div>
         </div>
-        {/* <br />
-        <hr />
-        <Form>
-          <label style={{ fontSize: "20px" }}>Product Name</label>
-          <br />
-          <input
-            className="shadow"
-            style={{
-              height: "45px",
-              width: "50%",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-            }}
-            type="text"
-            name="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />{" "}
-          <br />
-          <br />
-          <label style={{ fontSize: "20px" }}>Description</label>
-          <br />
-          <input
-            className="shadow"
-            style={{
-              height: "45px",
-              width: "50%",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-            }}
-            type="text"
-            name="Title"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />{" "}
-          <br />
-          <br />
-          <label style={{ fontSize: "20px" }}>Price</label>
-          <br />
-          <input
-            className="shadow"
-            style={{
-              height: "45px",
-              width: "50%",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-            }}
-            type="text"
-            name="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          <br />
-          <br />
-          <label style={{ fontSize: "20px" }}>Image</label>
-          <br />
-          <input
-            className="shadow"
-            style={{
-              height: "45px",
-              width: "50%",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-            }}
-            type="text"
-            name="productImage"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-          />
-          <br />
-          <br />
-          <label style={{ fontSize: "20px" }}>Quantity</label>
-          <br />
-          <input
-            className="shadow"
-            style={{
-              height: "45px",
-              width: "50%",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-            }}
-            type="text"
-            name="Title"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            required
-          />{" "}
-          <br />
-          <br />
-          <label style={{ fontSize: "20px" }}>Product type</label>
-          <br />
-          <input
-            className="shadow"
-            style={{
-              height: "45px",
-              width: "50%",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-            }}
-            type="text"
-            name="category"
-            value={category}
-            onChange={(e) => setCategories(e.target.value)}
-          />
-          <br />
-          <br />
-          <Button
-            style={{
-              backgroundColor: "black",
-              border: "none",
-              height: "40px",
-              width: "100px",
-            }}
-            // onClick={Submit}
-          >
-            Save
-          </Button>
-        </Form> */}
       </div>
     </div>
   );

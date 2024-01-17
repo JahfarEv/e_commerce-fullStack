@@ -40,18 +40,16 @@ const CreateCategory = () => {
               </tr>
             </thead>
             <tbody>
-              
-                {categories.map((c) => (
-                  <>
+              {categories.map((c) => (
+                <>
                   <tr>
-                  <td key={c.id}>{c.name}</td>
-                  <td>
-                    <button className="btn btn-primary">edit</button>
-                  </td>
+                    <td key={c.id}>{c.name}</td>
+                    <td>
+                      <button className="btn btn-primary">edit</button>
+                    </td>
                   </tr>
-                  </>
-                ))}
-              
+                </>
+              ))}
             </tbody>
           </table>
         </div>
