@@ -89,7 +89,7 @@ const createProduct = asyncErrorHandler(async (req, res) => {
     Image: image,
     price,
     description,
-    category,
+    category
   });
   res.status(201).json({
     status: "sucess",
@@ -129,14 +129,15 @@ const deleteProduct = asyncErrorHandler(async (req, res) => {
 // update products
 
 const updateProduct = asyncErrorHandler(async (req, res) => {
-  const id = req.params.id;
+  const {id,title,description,image,category,price} = req.body;
   if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     res.status(404).json({
       status: "error",
       message: "invalid product id",
     });
   }
-  const updatedProduct = await product.findByIdAndUpdate({ _id: id });
+  const updatedProduct = await product.findByIdAndUpdate({ _id: id },{title,description,image,category,price},
+    {new:true})
   if (!updatedProduct) {
     res.status(404).json({
       status: "error",

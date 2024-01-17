@@ -13,9 +13,9 @@ adminRouter.post('/login',(adminController.adminLogin))
 .get('/view',(adminController.viewProduct))
 .post('/addProduct',uploadCloudinary,adminController.createProduct)
 .delete('/products',(adminController.deleteProduct))
-.use(admToken)
-.patch('/update/:id',(adminController.updateProduct))
+.patch('/update',(adminController.updateProduct))
 .get('/category/:category',(adminController.allProduct))
 .get('/product/:id',(adminController.specificProduct))
+.use(admToken)
 
 module.exports = adminRouter

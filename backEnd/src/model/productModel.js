@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const category = require("./categoryModel");
 const productModel = new mongoose.Schema({
     title:String,
     Image:String,
     price:{type : Number , required:true},
     description: String,
-    category:String,
+    category:String, 
     quantity:Number
 
 });

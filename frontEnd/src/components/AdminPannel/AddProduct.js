@@ -52,7 +52,7 @@ const AddProduct = () => {
         "http://127.0.0.1:4000/api/admin/addProduct",
         formData
       );
-      if (response.success) {
+      if (response.status===201) {
         toast.success("Product create successfully");
         navigate("/ProductList");
       }

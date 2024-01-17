@@ -1,36 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../Sidebar";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import { shopContext } from "../../App";
-import { useContext } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+// import category from "../../../backEnd/src/model/categoryModel";
 
 const Edit = () => {
-  const nvgt = useNavigate();
+  const navigate = useNavigate();
   const { id } = useParams();
-  const { product, setProduct } = useContext(shopContext);
-  const editProduct = product.find((item) => item.id === parseInt(id));
-  console.log(editProduct);
-  const [name, setName] = useState(editProduct.productName);
-  const [price, setPrice] = useState(editProduct.price);
-  const [image, setImage] = useState(editProduct.productImage);
-  const [categorye, setCategory] = useState(editProduct.category);
-  const handleSave = (e) => {
-    e.preventDefault();
-    const updates = {
-      ...editProduct,
-      productName: name,
-      price: price,
-      productImage: image,
-      category: categorye,
-    };
-    const updatedProduct = product.map((item) =>
-      item.id === parseInt(id) ? updates : item
-    );
-    console.log(updatedProduct);
-    setProduct(updatedProduct);
-    nvgt("/productList");
-  };
+  const [product,setProduct] = useState({
+    title: "",
+    description: "",
+    image: "",
+    price: "",
+    category: ""
+  })
+
+  useEffect(()=>{
+    const fetchProducts = async()=>{
+try {
+  const response = await axios.get(`http://127.0.0.1:4000/api/admin/product/${id}`)
+  console.log(response.data.data.productById);
+const {_id,title,description,image,price,category} = response.data.data.productById
+setProduct({
+  id:_id,
+  title,
+  description,
+  image,
+  price,
+  category
+
+
+})
+
+} catch (error) {
+  console.log(error);
+}
+    }
+    fetchProducts()
+  },[id])
+
+  const updateProduct =async (e)=>{
+e.preventDefault()
+try {
+  const response = await axios.patch(`http://127.0.0.1:4000/api/admin/update`,product)
+console.log(response);
+  if(response.status === 200){
+    console.log('Product updated successfully');
+    toast.success('Product updated successfully')
+    navigate('/ProductList')
+  }
+} catch (error) {
+  console.log(error);
+}
+  }
+
+  const handleChange = (a)=>{
+const {name,value} = a.target;
+setProduct((data)=>({
+  ...data,
+  [name]:value
+}))
+
+}
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
@@ -44,12 +77,12 @@ const Edit = () => {
             color: "#333",
           }}
         >
-          Edit Product
+         EDIT PRODUCTS
         </h1>
         <br />
         <hr />
-        <Form>
-          <label style={{ fontSize: "20px" }}> Product Name </label>
+        <Form onSubmit={updateProduct}>
+          {/* <label style={{ fontSize: "20px" }}> Product Name </label> */}
           <br />
           <input
             className="shadow"
@@ -60,14 +93,15 @@ const Edit = () => {
               borderRadius: "3px",
               textAlign: "center",
             }}
+            placeholder="Write a title"
             type="text"
-            name="productName"
-            defaultValue={editProduct.productName}
-            onChange={(e) => setName(e.target.value)}
+            name="title"
+            value={product.title}
+            onChange={handleChange}
           />
           <br />
           <br />
-          <label style={{ fontSize: "20px" }}> Product Price </label>
+          {/* <label style={{ fontSize: "20px" }}> Product Price </label> */}
           <br />
           <input
             className="shadow"
@@ -78,15 +112,16 @@ const Edit = () => {
               borderRadius: "3px",
               textAlign: "center",
             }}
-            type="text"
+            placeholder="Write a price"
+            type="number"
             name="price"
-            defaultValue={editProduct.price}
-            onChange={(e) => setPrice(e.target.value)}
+           value={product.price}
+           onChange={handleChange}
           />
           <br />
           <br />
 
-          <label style={{ fontSize: "20px" }}> Product Image </label>
+          {/* <label style={{ fontSize: "20px" }}> Product Image </label> */}
           <br />
           <input
             className="shadow"
@@ -97,15 +132,16 @@ const Edit = () => {
               borderRadius: "3px",
               textAlign: "center",
             }}
+            placeholder="Upload image"
             type="text"
-            name="productImage"
-            defaultValue={editProduct.productImage}
-            onChange={(e) => setImage(e.target.value)}
+            name="image"
+            value={product.image}
+            onChange={handleChange}
           />
           <br />
           <br />
 
-          <label style={{ fontSize: "20px" }}> Product Type </label>
+          {/* <label style={{ fontSize: "20px" }}> Product Type </label> */}
           <br />
           <select
             className="shadow"
@@ -117,17 +153,18 @@ const Edit = () => {
               textAlign: "center",
               fontSize: "20px",
             }}
+            placeholder="Select category"
             name="category"
-            defaultValue={editProduct.category}
-            onChange={(e) => setCategory(e.target.value)}
+            value={product.category}
+            onChange={handleChange}
           >
-            <option>Dog</option>
-            <option>Cat</option>
+            <option>dog</option>
+            
           </select>
           <br />
           <br />
           <Button
-            onClick={handleSave}
+            type="submit"
             style={{
               backgroundColor: "black",
               border: "none",
