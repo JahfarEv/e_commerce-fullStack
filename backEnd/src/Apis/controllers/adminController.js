@@ -209,8 +209,50 @@ try {
   })
 }
 }
+//update category
+const updateCategory =async (req,res)=>{
+try {
+  const {name} = req.body
+  const {id} = req.params
+  const category = await categoryModel.findByIdAndUpdate(id,
+    {name, slug:slugify(name)},
+  {new:true});
+res.status(200).json({
+  status:'success',
+  message:'Category updated successfully',
+  category
+})
+} catch (error) {
+  console.log(error);
+  res.status(500).json({
+    status:'error',
+    message:'Error while updating category'
+  })
+}
+}
 
-//viwe products
+
+//delete category
+const deleteCategory =async (req,res)=>{
+try {
+  const {id} = req.params
+  await categoryModel.findByIdAndDelete(id)
+  res.status(200).json({
+    status:'success',
+    message:'Category removed successfully'
+
+  })
+} catch (error) {
+  console.log(error);
+  res.status(500).json({
+    status:'error',
+    message:'Category id not valid'
+  })
+}
+}
+
+
+//view products
 
 const viewProduct = asyncErrorHandler (async (req,res)=>{
 
@@ -287,5 +329,7 @@ module.exports = {
   updateProduct,
   createCategory,
   viewProduct,
-  categoryController
+  categoryController,
+  updateCategory,
+  deleteCategory
 };

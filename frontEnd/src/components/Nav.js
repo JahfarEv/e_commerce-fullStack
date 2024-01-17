@@ -12,6 +12,7 @@ import "../components/Nav.css";
 import brand from "./Category/img/White logo - no background.png";
 import { useContext } from "react";
 import { shopContext } from "../App";
+import Login from "./Login";
 
 function NavScroll() {
   const { login } = useContext(shopContext);
@@ -71,7 +72,7 @@ function NavScroll() {
             <Dropdown.Menu style={{ minWidth: 370 }}>
               <span style={{ padding: 10 }}>Cart is Empty!</span>
             </Dropdown.Menu>
-            {login ? (
+            {Login ? (
               <Nav.Link
                 onClick={() => navigate("/signin")}
                 className="mx-3"
