@@ -9,6 +9,7 @@ const wishlist = require("../../model/wishList");
 const user = require("../../model/userModel");
 const { Stripe } = require("stripe");
 const orders = require("../../model/orderSchema");
+const categoryModel =require('../../model/categoryModel');
 
 const signToken = (id) => {
   return jwt.sign({ id, isAdmin: false }, process.env.SECRET_STR, {
@@ -72,9 +73,10 @@ exports.viewProducts = asyncErrorHandler(async (req, res) => {
 });
 //Products view by category
 exports.productByCategory = asyncErrorHandler(async (req, res) => {
-  const categoryName = req.params.categoryname;
+  // const categoryName = req.params.categoryname;
  
-  const productCategory = await product.find({ category: categoryName });
+  const productCategory = await categoryModel.findOne({slug:req.params.slug})
+  const products = await product.find({category}).populate('category')
   console.log(productCategory);
 
   if (productCategory.length === 0) {
@@ -86,7 +88,8 @@ exports.productByCategory = asyncErrorHandler(async (req, res) => {
     res.status(200).json({
       status: "success",
       data: {
-        product: productCategory,
+        productCategory,
+        products
       },
     });
   }

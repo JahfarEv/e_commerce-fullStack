@@ -3,7 +3,6 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
 import { IoMdLogOut } from "react-icons/io";
@@ -13,20 +12,30 @@ import brand from "./Category/img/White logo - no background.png";
 import { useContext } from "react";
 import { shopContext } from "../App";
 import Login from "./Login";
+import useCategory from "../hooks/useCategory";
+import { Link } from "react-router-dom";
+import Dropdown from "react-bootstrap/Dropdown";
 
 function NavScroll() {
   const { login } = useContext(shopContext);
-
+  const categories = useCategory()
+console.log(categories);
   const navigate = useNavigate();
   return (
-    <Navbar expand="lg" className=" hvr" >
+    <Navbar expand="lg" className=" hvr">
       <Container fluid>
         <Navbar.Brand
           className="a"
           onClick={() => navigate("/")}
           style={{ color: "#F3DA99" }}
         >
-          <img src={brand} alt="brandlogo" width="100px" height="30px" style={{cursor:'pointer'}} />
+          <img
+            src={brand}
+            alt="brandlogo"
+            width="100px"
+            height="30px"
+            style={{ cursor: "pointer" }}
+          />
         </Navbar.Brand>
         <Navbar.Toggle className="bg-white" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -49,8 +58,22 @@ function NavScroll() {
             >
               All
             </Nav.Link>
-            
-            <Nav.Link
+
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                categories
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+              {categories.map((e) =>(
+                <Dropdown.Item href="#/action-1">{e.name}</Dropdown.Item>
+               
+              ))}
+                
+              </Dropdown.Menu>
+            </Dropdown>
+
+            {/* <Nav.Link
               className="a"
               style={{ color: "white" }}
               onClick={() => navigate("/dog")}
@@ -63,7 +86,7 @@ function NavScroll() {
               onClick={() => navigate("/cat")}
             >
               Cat
-            </Nav.Link>
+            </Nav.Link> */}
           </Nav>
           <Nav className="d-flex">
             <Nav.Link onClick={() => navigate("/cart")} title="cart">

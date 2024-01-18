@@ -2,7 +2,7 @@ const express = require("express");
 const authRouter = require("./Apis/Router/authRouter");
 // const CustomError = require('./utils/customError')
 const globalErrorHandler = require('./Apis/controllers/errorController');
-const adminRouter = require("./Apis/Router/adminRouter");
+const adminRouter = require("./Apis/router/adminRouter");
 const app = express();
 const cors = require('cors')
 app.use(cors())

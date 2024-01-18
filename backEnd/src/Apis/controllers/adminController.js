@@ -89,9 +89,10 @@ const createProduct = asyncErrorHandler(async (req, res) => {
     Image: image,
     price,
     description,
-    category,
+    category:category,
     quantity:1
   });
+  console.log(category.name);
   res.status(201).json({
     status: "sucess",
     data: {
@@ -231,7 +232,20 @@ res.status(200).json({
   })
 }
 }
+//single category
 
+const singleCategory = async(req,res)=>{
+try {
+  const category = await categoryModel.findOne({slug:req.params.slug})
+  res.status(200).json({
+    status:'success',
+    message:'get single category successfull',
+    data:category
+  })
+} catch (error) {
+  console.log(error);
+}
+}
 
 //delete category
 const deleteCategory =async (req,res)=>{
@@ -276,8 +290,8 @@ const viewProduct = asyncErrorHandler (async (req,res)=>{
 
 //all products by category
 const allProduct = asyncErrorHandler(async (req, res, next) => {
-  const category = req.params.category;
-  const productCategory = await product.find({ category });
+  // const category = req.params.category;
+  const productCategory = await product.find({slug:req.body.slug});
   console.log(productCategory);
   if (!productCategory) {
     res.status(404).json({
@@ -332,5 +346,6 @@ module.exports = {
   viewProduct,
   categoryController,
   updateCategory,
+  singleCategory,
   deleteCategory
 };

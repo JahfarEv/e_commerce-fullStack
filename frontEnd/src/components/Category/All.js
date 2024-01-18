@@ -52,7 +52,7 @@ const search = products.filter((val) => {
       <Nav />
       <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
 
-      <img src={img1} alt="banner" style={{ width: "100%" }} />
+      {/* <img src={img1} alt="banner" style={{ width: "100%" }} /> */}
       <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
       <div
         className="templateContainer "
