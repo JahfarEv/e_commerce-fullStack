@@ -28,9 +28,12 @@ const Login = () => {
         .post("http://127.0.0.1:4000/api/users/login", data)
         .then((res) => {
           const storeToken = res.data.token;
+          const userId = res.data.user._id
           toast.success("login successfully");
+          console.log(res.data.user._id);
           navigate("/all");
           localStorage.setItem("token", storeToken);
+          localStorage.setItem("userId",userId)
         })
         .catch((error) => {
           toast.error(error);

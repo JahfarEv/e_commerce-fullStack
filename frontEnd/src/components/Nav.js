@@ -72,7 +72,7 @@ function NavScroll() {
             <Dropdown.Menu style={{ minWidth: 370 }}>
               <span style={{ padding: 10 }}>Cart is Empty!</span>
             </Dropdown.Menu>
-            {Login ? (
+            {login ? (
               <Nav.Link
                 onClick={() => navigate("/signin")}
                 className="mx-3"

@@ -10,14 +10,14 @@ router.post('/register',(authController.signup))
 .get('/products',(authController.viewProducts))
 .get('/product/:id',(authController.productById))
 .get('/category/:categoryname',(authController.productByCategory))
-.use(verifyToken)
 .post('/cart/:id',(authController.addToCart))
-.get('/viewcart',(authController.Cart))
+.get('/viewcart/:id',(authController.Cart))
 .post('/cart/remove/:id',(authController.deleteFromCart))
 .post('/wishlist/:id',(authController.proWishList))
 .get('/viewlist',(authController.wishList))
 .post('/payments/:id',(authController.payments))
 .get('/payment/success',(authController.paymentSuccess))
+.use(verifyToken)
 
 
 

@@ -20,8 +20,17 @@ import Sidebar from "./components/Sidebar";
 import "../src/App.css";
 import Edit from "./components/AdminPannel/Edit";
 import CreateCategory from "./components/AdminPannel/CreateCategory";
+import axios from "axios";
 
 export const shopContext = createContext();
+
+// export const Axios = axios.create({
+//   baseURL:process.env.REACT_APP_LOCALHOST,
+//   headers:{
+//     "Content-Type":"Application/json",
+//     Authorization:localStorage.getItem("token")
+//   }
+// })
 
 function App() {
   const [cart, setCart] = useState([]);

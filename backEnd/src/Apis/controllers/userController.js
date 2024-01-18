@@ -165,19 +165,21 @@ exports.addToCart = asyncErrorHandler(async (req, res, next) => {
 //view cart
 
 exports.Cart = asyncErrorHandler(async (req, res) => {
-  const viewCart = await cart.find();
+  const userId = req.params.id
+  const viewCart = await cart.findOne({user:userId});
   if (!viewCart) {
-    res.status(404).json({
+     return res.status(404).json({
       status: "error",
       message: "cart is empty",
     });
   }
+  const cartItems = viewCart.products
+  const cartProducts = await product.find({_id:{$in:cartItems}})
   res.status(200).json({
-    status: "succes",
-    data: {
-      viewCart,
-    },
-  });
+    status:'success',
+    message:'products fetched successfully',
+    data:cartProducts
+  })
 });
 
 //Delete products from cart

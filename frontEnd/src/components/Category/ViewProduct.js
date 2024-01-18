@@ -11,52 +11,65 @@ import axios from "axios";
 
 const ViewProduct = () => {
   const naviagate = useNavigate();
-  // const { product } = useContext(shopContext);
+
   const { id } = useParams();
-  // const products = product.filter((item) => item.id === parseInt(id));
 
-  // const { cart, setCart, login } = useContext(shopContext);
-  // const addToCart = () => {
-  //   if (login) {
-  //     const [newData] = products;
-  //     const duplicate = cart.filter((item) => item.id === newData.id);
-  //     if (duplicate.length > 0) {
-  //       toast.warning(" Product alredy existed");
-  //     } else {
-  //       setCart((prevState) => [...prevState, newData]);
-  //       toast.success("Product added your cart");
-  //     }
-  //   } else {
-  //     toast.warning("pls login");
-  //     naviagate("/signin");
-  //   }
-  // };
-const [viewProduct,setViewProduct] = useState([])
+  const [viewProduct, setViewProduct] = useState([]);
+  const userId = localStorage.getItem("userId");
+  console.log(userId);
 
-useEffect(()=>{
-  const viewProduct =async ()=>{
-try {
-  const response = await axios.get(`http://127.0.0.1:4000/api/users/product/${id}`)
-  console.log(response.data.data.products);
-  if(response.status === 200){
-    setViewProduct(response.data.data.products)
-    toast.success('success')
-  }
-} catch (error) {
-  console.log(error);
-  toast.error('Product not available')
-  
-}
-  }
-  viewProduct()
-},[])
-const view = []
-view.push(viewProduct)
+  useEffect(() => {
+    const viewProduct = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:4000/api/users/product/${id}`
+        );
+        console.log(response.data.data.products);
+        if (response.status === 200) {
+          setViewProduct(response.data.data.products);
+          toast.success("success");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Product not available");
+      }
+    };
+    viewProduct();
+  }, []);
+  const view = [];
+  view.push(viewProduct);
+
+  const handleClick = async () => {
+    try{
+      const response = await axios.post(
+        `http://127.0.0.1:4000/api/users/cart/${userId}`,
+        { product: id }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        await axios.get(`http://127.0.0.1:4000/api/users/viewcart/${userId}`);
+       toast.success('success')
+        
+      }
+    }
+    catch (error){
+console.log(error);
+toast.error('error')
+    }
+    
+  };
 
   return (
     <div style={{ backgroundColor: "#3c0747" }}>
       <Nav />
-      <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
+      <div
+        style={{
+          border: "none solid black",
+          width: "100%",
+          height: "20px",
+          backgroundColor: "white",
+        }}
+      ></div>
       <Container className="d-flex align-items-center justify-content-center ">
         {view.map((item) => (
           <div className="mt-4">
@@ -83,7 +96,7 @@ view.push(viewProduct)
                     textOverflow: "ellipsis",
                     overflow: "hidden",
                     whiteSpace: "nowrap",
-                    fontWeight:'bold'
+                    fontWeight: "bold",
                   }}
                 >
                   {item.title}
@@ -93,7 +106,6 @@ view.push(viewProduct)
                     textOverflow: "ellipsis",
                     overflow: "hidden",
                     whiteSpace: "nowrap",
-                    
                   }}
                 >
                   {item.description}
@@ -103,7 +115,7 @@ view.push(viewProduct)
                   <span className="h4">{item.price}</span>
                 </Card.Title>
                 <Button
-                  // onClick={addToCart}
+                  onClick={handleClick}
                   className={`d-flex align-item-center m-auto border-0`}
                 >
                   <BsCartPlus size="1.8rem" />
@@ -114,7 +126,14 @@ view.push(viewProduct)
           </div>
         ))}
       </Container>
-      <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
+      <div
+        style={{
+          border: "none solid black",
+          width: "100%",
+          height: "20px",
+          backgroundColor: "white",
+        }}
+      ></div>
       <Footer />
     </div>
   );
