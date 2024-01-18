@@ -73,25 +73,45 @@ try {
   toast.error('somthing went wrong')
 }
 }
+
+//delete categories
+const handleDelete = async(id)=>{
+  try {
+    const data = await axios.delete(`http://127.0.0.1:4000/api/admin/delete-category/${id}`,
+    {name: updatedName});
+    if(data.status === 200){
+      toast.success(`category is deleted`);
+      
+      allCategories()
+    }
+    else{
+      toast.error(data.message);
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error('somthing went wrong')
+  }
+  }
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
-      <div style={{ flex: "1", textAlign: "center" }}>
-        <h1>Manage Category</h1>
-        <div className="p-3 w-50">
+      <div style={{ flex: "1",  backgroundColor: "#3c0747" }}>
+        <h1 style={{color:'white'}} className="p-3 mt-5">Manage Category</h1>
+        <div className="p-3 w-75">
           <CategoryForm 
             handleSubmit={handleSubmit}
             value={name}
             setValue={setName}
           />
         </div>
-        <div>
-          <table className="table">
+        <div className="p-3 w-75" >
+          <table className="table" >
             <thead>
               <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Action</th>
-                <th scope="col">Action</th>
+                <th scope="col">Update</th>
+                <th scope="col">Remove</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -106,9 +126,9 @@ try {
                       }}>Edit</button>
                     </td>
                     <td>
-                      <button className="btn btn-danger ms-2">Delete</button>
+                      <button className="btn btn-danger ms-2" onClick={()=>{handleDelete(c._id)}}>Delete</button>
                     </td>
-                  </tr>
+                  </tr> 
                 </>
               ))}
             </tbody>

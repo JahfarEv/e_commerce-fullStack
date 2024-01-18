@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Select } from "antd";
+const { Option } = Select;
 // import category from "../../../backEnd/src/model/categoryModel";
 
 const Edit = () => {
@@ -16,6 +18,27 @@ const Edit = () => {
     price: "",
     category: ""
   })
+  const[categories,setCategories] = useState([])
+  const [category, setcategory] = useState("");
+  const [image,setImage] = useState("")
+  const allCategories = async () => {
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:4000/api/admin/category/get-category"
+      );
+      console.log(response);
+      if (response.status === 200) {
+        setCategories(response.data.data.category);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("somthing went wrong in getting category");
+    }
+  };
+  useEffect(() => {
+    allCategories();
+  }, []);
+
 
   useEffect(()=>{
     const fetchProducts = async()=>{
@@ -67,62 +90,92 @@ setProduct((data)=>({
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
-      <div style={{ flex: "1", textAlign: "center" }}>
+      <div style={{ flex: "1", textAlign: "center" , backgroundColor: "#3c0747" }}>
         <h1
           style={{
-            fontFamily: "sans-serif",
+            
             padding: "10px",
             position: "relative",
-            top: "30px",
-            color: "#333",
-          }}
+           margin:"10px",
+            color: "white",
+          }} className="mt-5"
         >
-         EDIT PRODUCTS
+         Update Products
         </h1>
+        <div className="m-1 w-75">
+        <Select
+            bordered={false}
+            placeholder="Select category"
+            size="large"
+            showSearch
+            className="form-select mb-3"
+            onChange={(value) => {
+              setcategory(value);
+            }}
+          >
+            {categories.map((c) => (
+              <Option key={c._id} value={c._id}>
+                {c.name}
+              </Option>
+            ))}
+          </Select>
         <br />
         <hr />
         <Form onSubmit={updateProduct}>
-          {/* <label style={{ fontSize: "20px" }}> Product Name </label> */}
-          <br />
+          
+          <div className="mb-3">
           <input
-            className="shadow"
-            style={{
-              height: "45px",
-              width: "500px",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-            }}
-            placeholder="Write a title"
+            className="form-control"
+           placeholder="Write a title"
             type="text"
             name="title"
             value={product.title}
             onChange={handleChange}
           />
+          </div>
+         
           <br />
-          <br />
-          {/* <label style={{ fontSize: "20px" }}> Product Price </label> */}
-          <br />
+          <div className="mb-3">
           <input
-            className="shadow"
-            style={{
-              height: "45px",
-              width: "500px",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-            }}
+            className="form-control"
+            
             placeholder="Write a price"
             type="number"
             name="price"
            value={product.price}
            onChange={handleChange}
           />
-          <br />
-          <br />
+          </div>
+         
+<br/>
+          <div className="mb-3">
+            <label className="btn btn-outline-secondary col-md-12">
+              {image ? image.name : "Upload image..."}
+
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files[0])}
+                hidden
+              />
+            </label>
+          </div>
+          <div className="mb-3">
+            {image && (
+              <div className="text-center">
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="product photo"
+                  height={"200px"}
+                  className="img img-responsive"
+                />
+              </div>
+            )}
+          </div>
 
           {/* <label style={{ fontSize: "20px" }}> Product Image </label> */}
-          <br />
+          {/* <br />
           <input
             className="shadow"
             style={{
@@ -139,29 +192,9 @@ setProduct((data)=>({
             onChange={handleChange}
           />
           <br />
-          <br />
+          <br /> */}
 
-          {/* <label style={{ fontSize: "20px" }}> Product Type </label> */}
-          <br />
-          <select
-            className="shadow"
-            style={{
-              height: "40px",
-              width: "300px",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-              fontSize: "20px",
-            }}
-            placeholder="Select category"
-            name="category"
-            value={product.category}
-            onChange={handleChange}
-          >
-            <option>dog</option>
-            
-          </select>
-          <br />
+         
           <br />
           <Button
             type="submit"
@@ -175,6 +208,8 @@ setProduct((data)=>({
             Save
           </Button>
         </Form>
+        </div>
+
       </div>
     </div>
   );

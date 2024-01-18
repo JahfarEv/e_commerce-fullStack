@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Select } from "antd";
-const { Option } = Select;
+const { Option } = Select
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const AddProduct = () => {
         "http://127.0.0.1:4000/api/admin/addProduct",
         formData
       );
-      if (response.status===201) {
+      if (response.status === 201) {
         toast.success("Product create successfully");
         navigate("/ProductList");
       }
@@ -66,17 +66,20 @@ const AddProduct = () => {
     <div className="d-flex">
       <Sidebar />
       <div
-        style={{ flex: "1", textAlign: "center", backgroundColor: "lightgray" }}
+        style={{
+          flex: "1",
+          backgroundColor: "lightgray",
+          alignItems: "center",
+        }}
       >
         <h1
           style={{
-            padding: "10px",
             position: "relative",
-            top: "30px",
+            top: "15px",
             color: "#333",
           }}
         >
-          Add Product
+          CREATE PRODUCT{" "}
         </h1>
         <div className="m-1 w-75">
           <Select
