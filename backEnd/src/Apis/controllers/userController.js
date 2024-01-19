@@ -211,56 +211,83 @@ exports.deleteFromCart = asyncErrorHandler(async (req, res) => {
 //Add to wishList
 exports.addToWishlist = async (req, res) => {
   const userId = req.params.id;
+  console.log(userId);
   if (!userId) {
     res.status(500).json({
       status: "error",
       message: "user id not found",
     });
   }
-  const productId = req.body;
+  const {productId} = req.body;
+  console.log(productId);
   const products = product.findById(productId);
+
   if (!products) {
     res.status(500).json({
       status: "error",
       message: "Product not found",
     });
   }
-  const findProduct = await userSchema.findById({
-    _id: userId,
-    wishlists: productId,
-  });
-  if (findProduct) {
-    res.status(500).json({
-      status: "error",
-      message: "Product allready exist",
-    });
-  }
-  await userSchema.updateOne({ _id: userId },{$push:{wishlists:productId}});
+  
+  await userSchema.updateOne({ _id: userId },{$push:{wishlist:productId}});
   res.status(200).json({
     status:'success',
-    message:'Product add to wish list'
+    message:'Product add to wish list',
+    
 
   })
 };
 
 //view wish list
 
-exports.wishList = asyncErrorHandler(async (req, res) => {
-  const viewWishList = await wishlist.find();
-
-  if (!viewWishList) {
-    res.status(404).json({
-      status: "error",
-      message: "wish list is empty",
-    });
+exports.viewWishlist=asyncErrorHandler(async(req,res)=>{
+  const userId=req.params.id;
+  if(!mongoose.Types.ObjectId.isValid(userId)){
+     return res.status(400).json({
+          status:'error',
+          message:'invalid user ID format'
+      })
   }
-  res.status(200).json({
-    status: "succes",
-    data: {
-      viewWishList,
-    },
-  });
-});
+  const user=await userSchema.findById(userId)
+  // console.log(user);
+  if(!user){
+      return res.status(404).json({
+          status:'fail',
+          message:'user not found'
+      })
+  }
+  const wishlistIds=user.wishlist;
+  if(wishlistIds.length===0){
+     return res.status(200).json({
+          status:'success',
+          message:'user wishlist is empty ',
+          data:[]
+      })
+  }
+  const wishlistProducts=await product.find({_id:{$in:wishlistIds}})
+  
+      res.status(200).json({
+          status:'success',
+          message:'successfully feched user wishlist products',
+          data:wishlistProducts
+      })
+})
+
+//delete wishlist
+
+exports.deleteWishlist=asyncErrorHandler(async(req,res)=>{
+  const userId=req.params.id;
+  const {productId}=req.body;
+  if(!productId){
+      return res.status(404).json({status:'fail',message:'product not found'})
+  }
+  const user=await userSchema.findById(userId);
+  if(!user){
+      return res.status(404).json({status:'fail',message:'user not found'})
+  }
+  await userSchema.updateOne({_id:userId},{$pull:{wishlist:productId}})
+  res.status(200).json({status:'success',message:'successfully remove product'})
+})
 
 //payments
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);

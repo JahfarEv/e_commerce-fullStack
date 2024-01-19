@@ -12,6 +12,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Footer from "../Footer";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FaRegHeart } from "react-icons/fa";
+
 const userId = localStorage.getItem('userId')
 
 const All = () => {
@@ -50,11 +52,11 @@ const search = products.filter((val) => {
   }
 });
 
-const addToWishlist = async () => {
+const addToWishlist = async (id) => {
 try {
   const response = await axios.post(`http://127.0.0.1:4000/api/users/wishlist/${userId}`,
-  {product:id})
-console.log(response);
+  {productId:id})
+toast.success('Product added successfully')
 
 } catch (error) {
   console.log(error);
@@ -94,6 +96,7 @@ console.log(response);
               className={`'bg-light-black text-light':'bg-light text-black'} text-center p-0 overflow-hidden shadow mx-auto mb-4`}
             >
               <Card.Body>
+              
                 <Card.Title
                   style={{
                     textOverflow: "ellipsis",
@@ -118,11 +121,12 @@ console.log(response);
                 >
                   View Item
                 </Button>
+                <br/>
                 <Button
                   onClick={()=>addToWishlist(item._id)}
                   className={`d-flex align-item-center m-auto border-0`}
                 >
-                  wish list
+                  Add to wish list
                 </Button>
               </Card.Body>
             </Card>

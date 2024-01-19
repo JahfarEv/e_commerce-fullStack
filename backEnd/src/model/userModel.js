@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const product = require("./productModel");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -28,6 +29,9 @@ const userSchema = new mongoose.Schema({
       message: "password & confirm password does not match!",
     },
   },
+  wishlist:[{
+    type:mongoose.Schema.ObjectId,ref:"product"
+  }]
 });
 
 userSchema.pre("save", async function (next) {

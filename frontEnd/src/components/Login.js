@@ -29,11 +29,13 @@ const Login = () => {
         .then((res) => {
           const storeToken = res.data.token;
           const userId = res.data.user._id
+          const username  =res.data.user.name
           toast.success("login successfully");
-          console.log(res.data.user._id);
+          console.log(res.data.user);
           navigate("/all");
           localStorage.setItem("token", storeToken);
           localStorage.setItem("userId",userId)
+          localStorage.setItem("username",username)
         })
         .catch((error) => {
           toast.error(error);

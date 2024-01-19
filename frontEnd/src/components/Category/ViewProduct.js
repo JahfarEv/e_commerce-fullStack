@@ -45,11 +45,11 @@ const ViewProduct = () => {
         `http://127.0.0.1:4000/api/users/cart/${userId}`,
         { product: id }
       );
-      console.log(response);
+      
       if (response.status === 200) {
         await axios.get(`http://127.0.0.1:4000/api/users/viewcart/${userId}`);
        toast.success('success')
-        
+        naviagate('/cart')
       }
     }
     catch (error){

@@ -16,7 +16,8 @@ import useCategory from "../hooks/useCategory";
 import { Link } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FaRegHeart } from "react-icons/fa";
-
+const user = localStorage.getItem("username")
+console.log(user);
 function NavScroll() {
   const { login } = useContext(shopContext);
   const categories = useCategory();
@@ -78,21 +79,9 @@ function NavScroll() {
               </Dropdown.Menu>
             </Dropdown>
 
-            {/* <Nav.Link
-              className="a"
-              style={{ color: "white" }}
-              onClick={() => navigate("/dog")}
-            >
-              Dog
-            </Nav.Link>
-            <Nav.Link
-              className="a"
-              style={{ color: "white" }}
-              onClick={() => navigate("/cat")}
-            >
-              Cat
-            </Nav.Link> */}
+          
           </Nav>
+          <h5 style={{color:"white",marginTop:'10px'}}>hi...{user}</h5>
           <Nav className="d-flex">
             <Nav.Link onClick={() => navigate("/cart")} title="cart">
               <FaShoppingCart color="white" fontSize="25px" />
