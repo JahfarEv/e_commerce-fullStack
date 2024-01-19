@@ -9,7 +9,8 @@ const wishlist = require("../../model/wishList");
 const user = require("../../model/userModel");
 const { Stripe } = require("stripe");
 const orders = require("../../model/orderSchema");
-const categoryModel =require('../../model/categoryModel');
+const categoryModel = require("../../model/categoryModel");
+const userSchema = require("../../model/userModel");
 
 const signToken = (id) => {
   return jwt.sign({ id, isAdmin: false }, process.env.SECRET_STR, {
@@ -72,28 +73,26 @@ exports.viewProducts = asyncErrorHandler(async (req, res) => {
   });
 });
 //Products view by category
-exports.productByCategory = asyncErrorHandler(async (req, res) => {
+exports.productByCategory = async (req, res) => {
   // const categoryName = req.params.categoryname;
- 
-  const productCategory = await categoryModel.findOne({slug:req.params.slug})
-  const products = await product.find({category}).populate('category')
-  console.log(productCategory);
 
-  if (productCategory.length === 0) {
-    return res.status(404).json({
-      status: "error",
-      message: "product not found",
-    });
-  } else {
+  const category = await categoryModel.findOne({ slug: req.params.slug });
+  const productss = await product.find({ category }).populate("category");
+  console.log(productss);
+
+  try {
     res.status(200).json({
       status: "success",
+      message: "Product fetched successfully",
       data: {
-        productCategory,
-        products
+        category,
+        productss,
       },
     });
+  } catch (error) {
+    console.log(error);
   }
-});
+};
 
 // View a specific product
 
@@ -127,25 +126,25 @@ exports.addToCart = asyncErrorHandler(async (req, res, next) => {
   console.log(checkProduct);
   if (!checkProduct) {
     res.status(404).json({
-      status:'error',
-      message:'not found'
-    })
+      status: "error",
+      message: "not found",
+    });
   }
   let newExistingCart = await cart.findOne({ user: userId });
   if (newExistingCart) {
     let exProductCart = newExistingCart.products.indexOf(productId);
     console.log(exProductCart);
     if (exProductCart !== -1) {
-    newExistingCart.quantity += 1
-    console.log(newExistingCart.quantity);
+      newExistingCart.quantity += 1;
+      console.log(newExistingCart.quantity);
       res.status(500).json({
-        status:'error',
-        message:'product allready exist'
-      })
+        status: "error",
+        message: "product allready exist",
+      });
     } else {
       newExistingCart.products.push(productId);
       newExistingCart.totalPrice += checkProduct.price;
-      newExistingCart.quantity+=1
+      newExistingCart.quantity += 1;
       newExistingCart.save();
       res.status(200).json({
         status: "success",
@@ -168,21 +167,21 @@ exports.addToCart = asyncErrorHandler(async (req, res, next) => {
 //view cart
 
 exports.Cart = asyncErrorHandler(async (req, res) => {
-  const userId = req.params.id
-  const viewCart = await cart.findOne({user:userId});
+  const userId = req.params.id;
+  const viewCart = await cart.findOne({ user: userId });
   if (!viewCart) {
-     return res.status(404).json({
+    return res.status(404).json({
       status: "error",
       message: "cart is empty",
     });
   }
-  const cartItems = viewCart.products
-  const cartProducts = await product.find({_id:{$in:cartItems}})
+  const cartItems = viewCart.products;
+  const cartProducts = await product.find({ _id: { $in: cartItems } });
   res.status(200).json({
-    status:'success',
-    message:'products fetched successfully',
-    data:cartProducts
-  })
+    status: "success",
+    message: "products fetched successfully",
+    data: cartProducts,
+  });
 });
 
 //Delete products from cart
@@ -210,44 +209,39 @@ exports.deleteFromCart = asyncErrorHandler(async (req, res) => {
 });
 
 //Add to wishList
-exports.proWishList = asyncErrorHandler(async (req, res, next) => {
+exports.addToWishlist = async (req, res) => {
   const userId = req.params.id;
-  const productId = req.body.product;
-  const checkProduct = await product.findById(productId);
-  if (!checkProduct) {
-    res.status(404).json({
+  if (!userId) {
+    res.status(500).json({
       status: "error",
-      message: "not found",
+      message: "user id not found",
     });
   }
-  const existingCart = await wishlist.findOne({ user: userId });
-
-  if (existingCart) {
-    const existingProductCart = existingCart.items.indexOf(productId);
-
-    if (existingProductCart !== -1) {
-      next(customError("already exist", 404));
-    }
-    existingCart.items.push(productId);
-    existingCart.save();
-    res.status(200).json({
-      status: "succes",
-      data: {
-        existingCart,
-      },
+  const productId = req.body;
+  const products = product.findById(productId);
+  if (!products) {
+    res.status(500).json({
+      status: "error",
+      message: "Product not found",
     });
   }
-  const newWishList = await wishlist.create({
-    userr: userId,
-    items: [productId],
+  const findProduct = await userSchema.findById({
+    _id: userId,
+    wishlists: productId,
   });
+  if (findProduct) {
+    res.status(500).json({
+      status: "error",
+      message: "Product allready exist",
+    });
+  }
+  await userSchema.updateOne({ _id: userId },{$push:{wishlists:productId}});
   res.status(200).json({
-    status: "succes",
-    data: {
-      newWishList,
-    },
-  });
-});
+    status:'success',
+    message:'Product add to wish list'
+
+  })
+};
 
 //view wish list
 
@@ -316,27 +310,26 @@ exports.payments = asyncErrorHandler(async (req, res) => {
   });
 
   if (session) {
-    const order = new orders ({
-      usr:findCart.user,
-      prodts:prod,
-      order_Id:session.id,
-      total_Price:findCart.totalPrice,
-      total_Items:findCart.products.length,
-      order_status:session.payment_status
-    })
+    const order = new orders({
+      usr: findCart.user,
+      prodts: prod,
+      order_Id: session.id,
+      total_Price: findCart.totalPrice,
+      total_Items: findCart.products.length,
+      order_status: session.payment_status,
+    });
 
-    await order.save()
+    await order.save();
     res.status(200).json({
-      status:'success',
-      session:session.url
-    })
-  }
-  else{
+      status: "success",
+      session: session.url,
+    });
+  } else {
     res.status(404).json({
-      status:failed
-    })
+      status: failed,
+    });
   }
-})
+});
 
 exports.paymentSuccess = (req, res) => {
   res.send("<h1>success</h1>");

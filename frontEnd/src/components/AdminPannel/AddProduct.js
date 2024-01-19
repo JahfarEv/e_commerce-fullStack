@@ -70,13 +70,14 @@ const AddProduct = () => {
           flex: "1",
           backgroundColor: "lightgray",
           alignItems: "center",
+          backgroundColor: "#3c0747"
         }}
       >
         <h1
           style={{
             position: "relative",
             top: "15px",
-            color: "#333",
+            color: "white",
           }}
         >
           CREATE PRODUCT{" "}

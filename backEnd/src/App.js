@@ -1,5 +1,5 @@
 const express = require("express");
-const authRouter = require("./Apis/Router/authRouter");
+const authRouter = require("./Apis/router/authRouter");
 // const CustomError = require('./utils/customError')
 const globalErrorHandler = require('./Apis/controllers/errorController');
 const adminRouter = require("./Apis/router/adminRouter");

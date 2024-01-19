@@ -15,11 +15,11 @@ import Login from "./Login";
 import useCategory from "../hooks/useCategory";
 import { Link } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
+import { FaRegHeart } from "react-icons/fa";
 
 function NavScroll() {
   const { login } = useContext(shopContext);
-  const categories = useCategory()
-console.log(categories);
+  const categories = useCategory();
   const navigate = useNavigate();
   return (
     <Navbar expand="lg" className=" hvr">
@@ -52,24 +52,29 @@ console.log(categories);
               Home
             </Nav.Link>
             <Nav.Link
-              className=" a"
+              className=" a "
               style={{ color: "white" }}
               onClick={() => navigate("/all")}
             >
-              All
+              Products
             </Nav.Link>
 
             <Dropdown>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
-                categories
+              <Dropdown.Toggle variant="light" id="dropdown-basic">
+                Categories
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-              {categories.map((e) =>(
-                <Dropdown.Item href="#/action-1">{e.name}</Dropdown.Item>
-               
-              ))}
-                
+                <Dropdown.Item onClick={() => navigate("/all")}>
+                  All categories
+                </Dropdown.Item>
+                {categories.map((e) => (
+                  <Dropdown.Item
+                    onClick={() => navigate(`/category/${e.slug}`)}
+                  >
+                    {e.name}
+                  </Dropdown.Item>
+                ))}
               </Dropdown.Menu>
             </Dropdown>
 
@@ -112,6 +117,15 @@ console.log(categories);
                 <FiLogIn color="white" fontSize="25px" />
               </Nav.Link>
             )}
+
+            <Nav.Link
+              onClick={() => navigate("/wishlist")}
+              className="mx-0"
+              title="admin"
+            >
+              <FaRegHeart color="white" fontSize="25px" />
+            </Nav.Link>
+
             <Nav.Link
               onClick={() => navigate("/adminLogin")}
               className="mx-0"

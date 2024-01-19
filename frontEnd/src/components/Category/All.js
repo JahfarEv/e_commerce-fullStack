@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Container from "react-bootstrap/esm/Container";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { shopContext } from "../../App";
 import Nav from "../Nav";
 import img1 from "../slider/nw3.gif";
@@ -12,17 +12,19 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Footer from "../Footer";
 import axios from "axios";
 import { toast } from "react-toastify";
+const userId = localStorage.getItem('userId')
 
 const All = () => {
   const [products,setProduct] = useState([])
   const navigate = useNavigate();
   const [searchItem, setSearchItem] = useState("");
+  const {id} = useParams()
+  
  
 useEffect(()=>{
   const getProducts = async()=>{
     try{
 const response = await axios.get('http://127.0.0.1:4000/api/users/products');
-console.log(response.data.data.products);
 if(response.status === 200){
   setProduct(response.data.data.products);
   toast.success('Product fetched successfully')
@@ -47,6 +49,18 @@ const search = products.filter((val) => {
     return "";
   }
 });
+
+const addToWishlist = async () => {
+try {
+  const response = await axios.post(`http://127.0.0.1:4000/api/users/wishlist/${userId}`,
+  {product:id})
+console.log(response);
+
+} catch (error) {
+  console.log(error);
+}
+  
+};
   return (
     <div style={{ backgroundColor: "#3c0747" }}>
       <Nav />
@@ -103,6 +117,12 @@ const search = products.filter((val) => {
                   className={`d-flex align-item-center m-auto border-0`}
                 >
                   View Item
+                </Button>
+                <Button
+                  onClick={()=>addToWishlist(item._id)}
+                  className={`d-flex align-item-center m-auto border-0`}
+                >
+                  wish list
                 </Button>
               </Card.Body>
             </Card>

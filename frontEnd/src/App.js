@@ -21,6 +21,8 @@ import "../src/App.css";
 import Edit from "./components/AdminPannel/Edit";
 import CreateCategory from "./components/AdminPannel/CreateCategory";
 import axios from "axios";
+import ProductCategory from "./components/Category/ProductCategory";
+import WishList from "./components/Category/WishList";
 
 export const shopContext = createContext();
 
@@ -67,6 +69,8 @@ function App() {
             <Route path="/dog" element={<Dog />} />
             <Route path="/cat" element={<Cat />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/wishlist" element={<WishList />} />
+            <Route path="/category/:slug" element={<ProductCategory />} />
             <Route path="/view/:id" element={<ViewProduct />} />
             <Route path="/sidebar" element={<Sidebar />} />
             <Route path="/add" element={<AddProduct />} />
