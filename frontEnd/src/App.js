@@ -26,13 +26,13 @@ import WishList from "./components/Category/WishList";
 
 export const shopContext = createContext();
 
-// export const Axios = axios.create({
-//   baseURL:process.env.REACT_APP_LOCALHOST,
-//   headers:{
-//     "Content-Type":"Application/json",
-//     Authorization:localStorage.getItem("token")
-//   }
-// })
+export const Axios = axios.create({
+  baseURL:process.env.REACT_APP_LOCALHOST,
+  headers:{
+  
+    Authorization:localStorage.getItem("token")
+  }
+})
 
 function App() {
   const [cart, setCart] = useState([]);

@@ -7,7 +7,6 @@ import Container from "react-bootstrap/esm/Container";
 import { useNavigate, useParams } from "react-router-dom";
 import { shopContext } from "../../App";
 import Nav from "../Nav";
-import img1 from "../slider/nw3.gif";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Footer from "../Footer";
 import axios from "axios";

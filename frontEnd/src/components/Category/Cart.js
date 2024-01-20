@@ -3,60 +3,35 @@ import { shopContext } from "../../App";
 import Nav from "../Nav";
 import Footer from "../Footer";
 import axios from "axios";
+import Item from "antd/es/list/Item";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const userId = localStorage.getItem("userId");
-  
-  const cartIncrement = (item) => {
-    const updateCart = cart.map((cartItem) => {
-      if (cartItem.id === item.id) {
-        return { ...cartItem, quandity: cartItem.quandity + 1 };
-      }
-      return cartItem;
-    });
-    setCart(updateCart);
+
+  const getCart = async () => {
+    const response = await axios.get(
+      `http://127.0.0.1:4000/api/users/viewcart/${userId}`
+    );
+    setCart(response.data.data);
   };
-  const cartDegrement = (item) => {
-    const updateCart = cart.map((cartItem) => {
-      if (cartItem.id === item.id && cartItem.quandity > 1) {
-        return { ...cartItem, quandity: cartItem.quandity - 1 };
-      }
-      return cartItem;
-    });
-    setCart(updateCart);
-  };
-  // const cartRemove = (item) => {
-  //   const updateCart = cart.filter((cartItem) => cartItem.id !== item.id);
-  //   setCart(updateCart);
-  // };
-
-  // const totalAmount = cart.reduce(
-  //   (total, item) => total + item.price * item.quandity,
-  //   0
-  // );
-
-  // const buyItem = (id) => {
-  //   const byItem = cart.find((item) => item.id === id);
-  //   const remove = cart.filter((item) => item.id !== id);
-  //   setBuy([...buy, byItem]);
-  //   setCart(remove);
-  // };
-
   useEffect(() => {
-    const getCart = async () => {
-      const response = await axios.get(
-        `http://127.0.0.1:4000/api/users/viewcart/${userId}`
-      );
-      setCart(response.data.data);
-    };
     getCart();
   }, []);
 
-  const deleteFromCart =async (id)=>{
-    
-const response = await axios.delete(`http://127.0.0.1:4000/api/users/cart/remove/${userId}`)
-  }
+  const deleteFromCart = async (id) => {
+    try {
+      const productId = id;
+      const response = await axios.delete(
+        `http://127.0.0.1:4000/api/users/cart/remove/${userId}`,
+        { data: { productId: productId } }
+      );
+      console.log(response.data);
+      getCart();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handlePayment = async () => {
     try {
@@ -101,21 +76,21 @@ const response = await axios.delete(`http://127.0.0.1:4000/api/users/cart/remove
                 </p>
                 <div className="input-group">
                   <button
-                    onClick={() => cartDegrement(item)}
+                    // onClick={() => cartDegrement(item)}
                     type="button"
                     className="btn btn-outline-secondary"
                   >
                     -
                   </button>
                   <button
-                    onClick={() => cartIncrement(item)}
+                    // onClick={() => cartIncrement(item)}
                     type="button"
                     className="btn btn-outline-secondary"
                   >
                     +
                   </button>
                   <button
-                    // onClick={() => cartRemove(item)}
+                    onClick={() => deleteFromCart(item._id)}
                     type="button"
                     className="btn btn-outline-danger"
                   >
@@ -137,10 +112,9 @@ const response = await axios.delete(`http://127.0.0.1:4000/api/users/cart/remove
                   style={{ width: "100px" }}
                 />
                 <p>Quantity :{item.quantity}</p>
-                <p>
+                {/* <p>
                   Total : <i class="bi bi-currency-rupee"></i>
-                  {item.price * item.quandity}
-                </p>
+                </p> */}
               </div>
             </li>
           ))}

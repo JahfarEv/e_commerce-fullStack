@@ -80,7 +80,7 @@ const AddProduct = () => {
             color: "white",
           }}
         >
-          CREATE PRODUCT{" "}
+          CREATE PRODUCT
         </h1>
         <div className="m-1 w-75">
           <Select

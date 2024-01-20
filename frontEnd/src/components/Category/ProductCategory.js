@@ -23,7 +23,7 @@ if(params.slug) getProductsByCategory()
         try {
             const response = await axios.get(`http://127.0.0.1:4000/api/users/product-category/${params.slug}`)
             console.log(response.data);
-            setProduct(response.data.data.productss)
+            setProduct(response.data.data.products)
             setCategory(response.data.data.category)
         } catch (error) {
             console.log(error);

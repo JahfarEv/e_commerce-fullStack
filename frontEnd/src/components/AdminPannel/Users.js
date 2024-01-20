@@ -27,11 +27,12 @@ const Users = () => {
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
-      <div style={{ flex: "1", textalign: "center" }}>
-        <Table striped bordered hover size="sm" style={{ margin: "0 auto" }}>
-          <thead>
+      <div style={{ flex: "1", textAlign: "center",backgroundColor:"#3c0747" }}>
+      <h1 style={{color:"white",marginTop:"10px",fontWeight:"bold"}}>Users Details</h1>
+        <Table striped bordered hover size="sm" style={{ margin: "0 auto",marginTop:"25px" }}>
+          <thead >
             <tr>
-              <th>Id</th>
+              
               <th>Name</th>
               <th>Email</th>
             </tr>

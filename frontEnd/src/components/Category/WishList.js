@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Nav from '../Nav'
 
 const WishList = () => {
     const navigate =useNavigate()
@@ -23,9 +24,13 @@ try {
         wishList()
     },[])
   return (
-    <div>
+    <div style={{ backgroundColor: "#3c0747" }}>
+    <Nav/>
+      <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
       <Container>
-        <div className="row justify-content-center">
+      
+        <div className="row justify-content-center mt-5">
+        <h1 style={{color:'white'}}>Wish List</h1>
           {wishLists.map((item) => (
             <Card
               style={{ width: "15rem", height: "auto" }}
@@ -52,7 +57,7 @@ try {
                   <span className="h4">{item.price}</span>
                 </Card.Title>
                 <Button
-                  onClick={() => navigate(`/wishlist/${item._id}`)}
+                  onClick={() => navigate(`/view/${item._id}`)}
                   className={`d-flex align-item-center m-auto border-0`}
                 >
                   View Item

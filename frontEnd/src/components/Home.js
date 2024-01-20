@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-awesome-slider/dist/styles.css";
 import img1 from "../components/slider/nw3.gif";
-import img2 from "../components/slider/puppy (1).png";
-import img3 from "../components/slider/puppy (2).png";
+
 import Footer from "./Footer";
 import Nav from "./Nav";
 import { toast } from "react-toastify";
@@ -23,9 +22,9 @@ const Home = () => {
   const getCategory =async ()=>{
     try {
       const response = await axios.get('http://127.0.0.1:4000/api/admin/category/get-category')
-    console.log(response.data.data.product);
+    console.log(response.data);
     if(response.status === 200){
-      setCategory(response.data.data.product)
+      setCategory(response.data.data.category)
     }
     } catch (error) {
       console.log(error);
@@ -41,7 +40,6 @@ getCategory()
       const response = await axios.get(
         "http://127.0.0.1:4000/api/users/products"
       );
-      console.log(response.data.data.products);
       if (response.status === 200) {
         setProduct(response.data.data.products);
         toast.success("Product fetched successfully");
@@ -78,7 +76,7 @@ setChecked(all)
           backgroundColor: "white",
         }}
       ></div>
-      <img
+      <img 
         src={img1}
         alt="bannerhome"
         style={{ width: "100%", cursor: "pointer" }}
@@ -115,7 +113,7 @@ setChecked(all)
         <div className="row justify-content-center" style={{margin:"15px"}}>
           {products.map((item) => (
             <Card
-              style={{ width: "15rem", height: "auto" }}
+              style={{ width: "16rem", height: "auto" }}
               key={item._id}
               className={`'bg-light-black text-light':'bg-light text-black'} text-center p-0 overflow-hidden shadow mx-auto mb-4`}
             >

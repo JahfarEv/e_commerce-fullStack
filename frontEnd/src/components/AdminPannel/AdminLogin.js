@@ -68,7 +68,7 @@ const AdminLogin = () => {
                 controlId="formBasicEmail"
                 style={{ marginBottom: "20px" }}
               >
-                <Form.Label>User name</Form.Label>
+                <Form.Label>Email id</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter user name"

@@ -4,13 +4,14 @@ const user = require("../../model/userModel");
 
 const verifyToken = async(req,res,next)=>{
     const athHeader = req.headers['authorization'];
+    console.log(athHeader);
     if(!athHeader){
         res.status(404).json({
             status:'failed',
             message:'no token provide'
         })
     }
-    const token = athHeader.split(' ')[1]
+    const token = athHeader
 
     if(!token){
         res.status(404).json({

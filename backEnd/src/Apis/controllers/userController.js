@@ -74,11 +74,10 @@ exports.viewProducts = asyncErrorHandler(async (req, res) => {
 });
 //Products view by category
 exports.productByCategory = async (req, res) => {
-  // const categoryName = req.params.categoryname;
-
+  
   const category = await categoryModel.findOne({ slug: req.params.slug });
-  const productss = await product.find({ category }).populate("category");
-  console.log(productss);
+  const products = await product.find({ category }).populate('category');
+  console.log(products);
 
   try {
     res.status(200).json({
@@ -86,7 +85,7 @@ exports.productByCategory = async (req, res) => {
       message: "Product fetched successfully",
       data: {
         category,
-        productss,
+        products,
       },
     });
   } catch (error) {
@@ -199,7 +198,7 @@ exports.deleteFromCart = asyncErrorHandler(async (req, res) => {
     });
   }
   const index = findCart.products.indexOf(productId);
-  const removeProduct = findCart.products[index];
+  const removeProduct = findCart.products[index+1];
   findCart.products.splice(removeProduct, 1);
 
   await findCart.save();
@@ -209,7 +208,7 @@ exports.deleteFromCart = asyncErrorHandler(async (req, res) => {
 });
 
 //Add to wishList
-exports.addToWishlist = async (req, res) => {
+exports.addToWishlist =asyncErrorHandler (async (req, res) => {
   const userId = req.params.id;
   console.log(userId);
   if (!userId) {
@@ -236,8 +235,8 @@ exports.addToWishlist = async (req, res) => {
     
 
   })
-};
-
+}
+)
 //view wish list
 
 exports.viewWishlist=asyncErrorHandler(async(req,res)=>{

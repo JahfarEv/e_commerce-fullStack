@@ -89,7 +89,7 @@ const createProduct = asyncErrorHandler(async (req, res) => {
     Image: image,
     price,
     description,
-    category:category,
+    category,
     quantity:1
   });
   console.log(category.name);
@@ -157,8 +157,8 @@ const updateProduct = asyncErrorHandler(async (req, res) => {
 
 //create category
 
-const createCategory =async (req, res) => {
-  try {
+const createCategory =asyncErrorHandler(async (req, res) => {
+
     const {name} = req.body
     console.log(name);
     if(!name){
@@ -179,22 +179,22 @@ const createCategory =async (req, res) => {
       status:'success',
       message:'new category created',
       data:{
-        category
+        category:category
       }
     })
-  } catch (error) {
-    console.log(error);
+  
+    
     res.status(500).json({
       status:'error',
       message:'Error in category'
     })
-  }
-};
+  
+})
 
 //get all category
 
-const categoryController = async(req,res)=>{
-try {
+const categoryController =asyncErrorHandler (async(req,res)=>{
+
   const category = await categoryModel.find({})
   res.status(200).json({
     status:'success',
@@ -203,17 +203,17 @@ try {
       category
     }
   })
-} catch (error) {
+
   console.log(error);
   res.status(500).json({
     status:'error',
     message:'Error while getting all categories'
   })
 }
-}
+)
 //update category
-const updateCategory =async (req,res)=>{
-try {
+const updateCategory =asyncErrorHandler(async (req,res)=>{
+
   const {name} = req.body
   const {id} = req.params
   const category = await categoryModel.findByIdAndUpdate(id,
@@ -224,32 +224,32 @@ res.status(200).json({
   message:'Category updated successfully',
   category
 })
-} catch (error) {
-  console.log(error);
+
   res.status(500).json({
     status:'error',
     message:'Error while updating category'
   })
 }
-}
+)
 //single category
 
-const singleCategory = async(req,res)=>{
-try {
+const singleCategory = asyncErrorHandler(async(req,res)=>{
+
   const category = await categoryModel.findOne({slug:req.params.slug})
   res.status(200).json({
     status:'success',
     message:'get single category successfull',
     data:category
   })
-} catch (error) {
-  console.log(error);
-}
-}
+res.status(404).json({
+  status:'error',
+  message:'not found'
+})
+})
 
 //delete category
-const deleteCategory =async (req,res)=>{
-try {
+const deleteCategory =asyncErrorHandler(async (req,res)=>{
+
   const {id} = req.params
   await categoryModel.findByIdAndDelete(id)
   res.status(200).json({
@@ -257,14 +257,14 @@ try {
     message:'Category removed successfully'
 
   })
-} catch (error) {
+
   console.log(error);
   res.status(500).json({
     status:'error',
     message:'Category id not valid'
   })
-}
-}
+
+})
 
 
 //view products
@@ -290,7 +290,7 @@ const viewProduct = asyncErrorHandler (async (req,res)=>{
 
 //all products by category
 const allProduct = asyncErrorHandler(async (req, res, next) => {
-  // const category = req.params.category;
+  
   const productCategory = await product.find({slug:req.body.slug});
   console.log(productCategory);
   if (!productCategory) {
