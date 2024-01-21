@@ -88,7 +88,10 @@ toast.success('Product added successfully')
 
       <Container>
         <div className="row justify-content-center">
+        
+        
           {search.map((item) => (
+            
             <Card
               style={{ width: "15rem", height: "auto" }}
               key={item._id}
@@ -129,8 +132,10 @@ toast.success('Product added successfully')
                 </Button>
               </Card.Body>
             </Card>
+         
           ))}
         </div>
+        
       </Container>
       <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
       <Footer />

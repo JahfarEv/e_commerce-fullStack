@@ -117,6 +117,28 @@ exports.productById = asyncErrorHandler(async (req, res, next) => {
   }
 });
 
+//filters
+
+exports.productFilters =async(req,res)=>{
+try {
+  const {checked} = req.body
+  let arg  ={}
+  if(checked.length >0) arg.category = checked
+const products = await product.find(arg)
+res.status(200).json({
+  status:'success',
+  products
+
+})
+} catch (error) {
+  console.log(error);
+  res.status(400).json({
+    status:'error',
+    message:'Error while filtering product'
+  })
+}
+}
+
 //add to cart
 exports.addToCart = asyncErrorHandler(async (req, res, next) => {
   const userId = req.params.id;

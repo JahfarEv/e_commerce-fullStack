@@ -55,15 +55,27 @@ if(value){
   all.push(id)
 }
 else{
-  all = all.filter((c)=> c!== id);
+  all = all.filter(c => c!== id);
 
 }
 setChecked(all)
   }
   useEffect(() => {
-    getProducts();
-  }, []);
+   if(!checked.length) getProducts();
+  }, [checked.length]);
+useEffect(()=>{
+if(checked.length) filterProduct()
+},[checked])
+  //get filters product
 
+  const filterProduct = async()=>{
+    try {
+      const {data} = await axios.post('http://127.0.0.1:4000/api/users/product-filters',{checked})
+      setProduct(data.products)
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div style={{ backgroundColor: "#3c0747" }}>
       <Nav />
@@ -76,12 +88,13 @@ setChecked(all)
           backgroundColor: "white",
         }}
       ></div>
-      <img 
+     
+      {/* <img 
         src={img1}
         alt="bannerhome"
         style={{ width: "100%", cursor: "pointer" }}
         onClick={() => navigate("/all")}
-      />
+      /> */}
 
       <div
         style={{
@@ -91,11 +104,21 @@ setChecked(all)
           backgroundColor: "white",
         }}
       ></div>
-      <Container>
+      
       
        
-      
+          
 
+          <Container>
+          <div className="row mt-3">
+          <div className="col-md-3">
+            <h4 className="text-center text-white">Filter by category</h4>
+            {category.map((c)=>(
+              <Checkbox key={c.id} onChange={(e)=>handleFilter(e.target.checked,c._id)}>
+                {c.name}
+              </Checkbox>
+            ))}
+          </div>
         {/* <div className="d-flex justify-content-center">
           <Card
             onClick={() => navigate("/dog")}
@@ -110,7 +133,9 @@ setChecked(all)
           </Card>
         </div> */}
 
-        <div className="row justify-content-center" style={{margin:"15px"}}>
+
+        <div className="row justify-content-center " style={{margin:"15px"}}>
+        {JSON.stringify(checked,null,4)}
           {products.map((item) => (
             <Card
               style={{ width: "16rem", height: "auto" }}
@@ -146,7 +171,9 @@ setChecked(all)
             </Card>
           ))}
         </div>
+        </div>
       </Container>
+      
       <div
         style={{
           border: "none solid black",
