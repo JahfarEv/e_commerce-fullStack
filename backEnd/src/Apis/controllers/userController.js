@@ -139,6 +139,45 @@ res.status(200).json({
 }
 }
 
+//product count
+
+// exports.productCount =async (req,res)=>{
+// try {
+//   const total = await product.find({}).estimatedDocumentCount()
+//   res.status(200).json({
+//     status:'success',
+//     data:total
+//   })
+// } catch (error) {
+//   console.log(error);
+//   res.status(400).json({
+//     status:'error',
+//     message:'Error in product count'
+//   })
+// }
+// }
+
+//product list base on page
+
+// exports.productList = async(req,res)=>{
+//   try {
+//     const perPage = 6
+//     const page = req.params.page ? req.params.page:1
+//     const products = product.find({}).select("-image").skip((page - 1)* perPage).limit(perPage).sort({createdAt: -1})
+
+//     res.status(200).json({
+//       status:'success',
+//       data:products
+//     })
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).json({
+//       status:'error',
+//       message:'error in per page control'
+//     })
+//   }
+// }
+
 //add to cart
 exports.addToCart = asyncErrorHandler(async (req, res, next) => {
   const userId = req.params.id;

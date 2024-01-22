@@ -19,6 +19,8 @@ const Home = () => {
   const [category, setCategory] = useState([]);
   const [checked,setChecked] = useState([])
 
+  
+
   const getCategory =async ()=>{
     try {
       const response = await axios.get('http://127.0.0.1:4000/api/admin/category/get-category')
@@ -32,6 +34,7 @@ const Home = () => {
         }
 useEffect(()=>{
 getCategory()
+
 },[])
 
 
@@ -40,15 +43,29 @@ getCategory()
       const response = await axios.get(
         "http://127.0.0.1:4000/api/users/products"
       );
+      
       if (response.status === 200) {
         setProduct(response.data.data.products);
         toast.success("Product fetched successfully");
       }
     } catch (error) {
+      
       console.log(error);
       toast.error("error");
     }
   };
+//getTotal count
+
+// const getTotal = async()=>{
+//   try {
+//     const {data} = await axios.get('http://127.0.0.1:4000/api/users/product-count')
+//     setTotal(data.total)
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+  //filter by category
   const handleFilter =(value,id)=>{
 let all = [...checked]
 if(value){
@@ -171,7 +188,11 @@ if(checked.length) filterProduct()
             </Card>
           ))}
         </div>
+        {/* <div className="m-2 p-2">{products && products.length < total &&(
+          <button className="btn btn-warning" onClick={(e)=>{e.preventDefault(); setPage(page + 1)}}>{loading ? "Loading..." :"Loadmore"}</button>
+        )}</div> */}
         </div>
+        
       </Container>
       
       <div

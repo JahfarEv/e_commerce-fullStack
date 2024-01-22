@@ -37,10 +37,11 @@ if(params.slug) getProductsByCategory()
       </div>
 
       
-        <div className="row justify-content-center">
+      <div className="row justify-content-center " style={{margin:"15px"}}>
+        {/* {JSON.stringify(checked,null,4)} */}
           {products.map((item) => (
             <Card
-              style={{ width: "15rem", height: "auto" }}
+              style={{ width: "16rem", height: "auto" }}
               key={item._id}
               className={`'bg-light-black text-light':'bg-light text-black'} text-center p-0 overflow-hidden shadow mx-auto mb-4`}
             >
@@ -73,8 +74,12 @@ if(params.slug) getProductsByCategory()
             </Card>
           ))}
         </div>
+        {/* <div className="m-2 p-2">{products && products.length < total &&(
+          <button className="btn btn-warning" onClick={(e)=>{e.preventDefault(); setPage(page + 1)}}>{loading ? "Loading..." :"Loadmore"}</button>
+        )}</div> */}
+        </div>
      
-    </div>
+  
   )
 }
 
