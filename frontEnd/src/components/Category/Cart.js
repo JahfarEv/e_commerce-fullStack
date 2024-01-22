@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
-import { shopContext } from "../../App";
+import React, {useEffect, useState } from "react";
+import { Axios } from "../../App";
 import Nav from "../Nav";
 import Footer from "../Footer";
-import axios from "axios";
-import Item from "antd/es/list/Item";
+
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const userId = localStorage.getItem("userId");
 
   const getCart = async () => {
-    const response = await axios.get(
-      `http://127.0.0.1:4000/api/users/viewcart/${userId}`
+    const response = await Axios.get(
+      `api/users/viewcart/${userId}`
     );
     setCart(response.data.data);
   };
@@ -22,8 +21,8 @@ const Cart = () => {
   const deleteFromCart = async (id) => {
     try {
       const productId = id;
-      const response = await axios.delete(
-        `http://127.0.0.1:4000/api/users/cart/remove/${userId}`,
+      const response = await Axios.delete(
+        `api/users/cart/remove/${userId}`,
         { data: { productId: productId } }
       );
       console.log(response.data);
@@ -35,8 +34,8 @@ const Cart = () => {
 
   const handlePayment = async () => {
     try {
-      const response = await axios.post(
-        `http://127.0.0.1:4000/api/users/payments/${userId}`
+      const response = await Axios.post(
+        `api/users/payments/${userId}`
       );
 
       const session = response.data.session;

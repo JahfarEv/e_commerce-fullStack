@@ -8,9 +8,10 @@ const router = express.Router();
 router.post('/register',(authController.signup))
 .post('/login',(authController.login))
 .get('/products',(authController.viewProducts))
-.get('/product/:id',(authController.productById))
 .get('/product-category/:slug',(authController.productByCategory))
 .post('/product-filters',(authController.productFilters))
+.use(verifyToken)
+.get('/product/:id',(authController.productById))
 // .get('/product-count',(authController.productCount))
 // .get('/product-list/:page',(authController.productList))
 .post('/cart/:id',(authController.addToCart))
@@ -20,7 +21,6 @@ router.post('/register',(authController.signup))
 .get('/viewlist/:id',(authController.viewWishlist))
 .post('/payments/:id',(authController.payments))
 .get('/payment/success',(authController.paymentSuccess))
-.use(verifyToken)
 
 
 

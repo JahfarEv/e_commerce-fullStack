@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { shopContext } from "../../App";
+import { Axios, shopContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Container } from "react-bootstrap";
 import { BsCartPlus } from "react-icons/bs";
@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Nav from "../Nav";
 import Footer from "../Footer";
-import axios from "axios";
 
 const ViewProduct = () => {
   const naviagate = useNavigate();
@@ -21,13 +20,12 @@ const ViewProduct = () => {
   useEffect(() => {
     const viewProduct = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:4000/api/users/product/${id}`
+        const response = await Axios.get(
+          `api/users/product/${id}`
         );
         console.log(response.data.data.products);
         if (response.status === 200) {
           setViewProduct(response.data.data.products);
-          toast.success("success");
         }
       } catch (error) {
         console.log(error);
@@ -41,20 +39,19 @@ const ViewProduct = () => {
 
   const handleClick = async () => {
     try{
-      const response = await axios.post(
-        `http://127.0.0.1:4000/api/users/cart/${userId}`,
+      const response = await Axios.post(
+        `api/users/cart/${userId}`,
         { product: id }
       );
       
       if (response.status === 200) {
-        await axios.get(`http://127.0.0.1:4000/api/users/viewcart/${userId}`);
-       toast.success('success')
-        naviagate('/cart')
+        await Axios.get(`api/users/viewcart/${userId}`);
+       toast.success('Product added to cart')
+       
       }
     }
     catch (error){
 console.log(error);
-toast.error('error')
     }
     
   };
