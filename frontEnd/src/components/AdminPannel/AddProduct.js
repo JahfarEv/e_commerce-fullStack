@@ -65,6 +65,7 @@ const AddProduct = () => {
   return (
     <div className="d-flex ">
       <Sidebar />
+      
       <div
         style={{
     flex: "1",
@@ -72,27 +73,32 @@ const AddProduct = () => {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height:"100vh"
+    height:"100vh",
     
   }}
       >
-        <h1
+      
+        <h3
           style={{
             // position: "relative",
             top: "15px",
             color: "white",
-            textAlign:"center"
+            textAlign:"center",
+            marginLeft:"25%",
+            marginTop:"70px",
+            marginBottom:"40px"
           }}
         >
-          CREATE PRODUCT
-        </h1>
+          NEW PRODUCT
+        </h3>
         <div className="m-1 w-50" >
           <Select
+          style={{marginLeft:"25%",marginRight:"25%"}}
             bordered={false}
             placeholder="Select category"
             size="large"
             showSearch
-            className="form-select mb-3 "
+            className="form-select mb-3"
             onChange={(value) => {
               setcategory(value);
             }}
@@ -103,11 +109,12 @@ const AddProduct = () => {
               </Option>
             ))}
           </Select>
-          <div className="mb-3">
+          <div className="mb-3"style={{marginLeft:"25%",marginRight:"25%"}} >
             <label className="btn btn-outline-secondary col-md-12">
               {image ? image.name : "Upload image..."}
 
               <input
+              
                 type="file"
                 name="image"
                 accept="image/*"
@@ -116,20 +123,22 @@ const AddProduct = () => {
               />
             </label>
           </div>
-          <div className="mb-3">
+          <div className="mb-3" >
             {image && (
-              <div className="text-center">
+              <div className="text-center"  >
                 <img
                   src={URL.createObjectURL(image)}
                   alt="product photo"
                   height={"200px"}
                   className="img img-responsive"
+                  
                 />
               </div>
             )}
           </div>
-          <div className="mb-3">
+          <div className="mb-3" >
             <input
+             style={{marginLeft:"25%",marginRight:"25%"}}
               type="text"
               value={title}
               placeholder="write a name"
@@ -139,6 +148,7 @@ const AddProduct = () => {
           </div>
           <div className="mb-3">
             <textarea
+             style={{marginLeft:"25%",marginRight:"25%"}}
               type="text"
               value={description}
               placeholder="write a description"
@@ -149,6 +159,7 @@ const AddProduct = () => {
           </div>
           <div className="mb-3">
             <input
+             style={{marginLeft:"25%",marginRight:"25%"}}
               type="number"
               value={price}
               placeholder="write a Price"
@@ -159,6 +170,7 @@ const AddProduct = () => {
           </div>
           <div className="mb-3">
             <input
+             style={{marginLeft:"25%",marginRight:"25%"}}
               type="number"
               value={quantity}
               placeholder="write a quantity"
@@ -168,8 +180,8 @@ const AddProduct = () => {
             />
           </div>
           <div className="mb-3">
-            <button className="btn btn-primary" onClick={handleCreate}>
-              CREATE PRODUCT
+            <button className="btn btn-primary" style={{marginLeft:"25%",marginRight:"25%"}} onClick={handleCreate}>
+              Submit
             </button>
           </div>
         </div>

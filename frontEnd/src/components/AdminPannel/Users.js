@@ -37,7 +37,7 @@ const Users = () => {
     
   }}>
       <h1 style={{color:"white",marginTop:"10px",fontWeight:"bold"}}>Users Details</h1>
-      <div className="d-flex flex-column w-50 " >
+      <div className="d-flex flex-column w-50 "z >
         <Table >
           <thead >
             <tr>

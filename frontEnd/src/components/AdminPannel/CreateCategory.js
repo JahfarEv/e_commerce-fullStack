@@ -104,16 +104,17 @@ const handleDelete = async(id)=>{
     height:"100vh"
     
   }}>
-        <h3 style={{color:'white'}} className="p-3 mt-5">Manage Category</h3>
+        <h3 style={{color:'white',marginLeft:"25%"}} className="p-3 mt-5">Manage Category</h3>
         <div className= "w-50">
           <CategoryForm 
             handleSubmit={handleSubmit}
             value={name}
             setValue={setName}
+            
           />
         </div>
         <div className="d-flex flex-column p-3 w-50 " >
-          <table className="table" >
+          <table className="table" style={{marginLeft:"25%",marginRight:"25%"}} >
             <thead >
               <tr  className="text-center">
                 <th scope="col">Name</th>
