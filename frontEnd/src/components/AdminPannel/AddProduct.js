@@ -67,9 +67,14 @@ const AddProduct = () => {
       <Sidebar />
       <div
         style={{
-          flex: "1",
-          backgroundColor: "#3c0747"
-        }}
+    flex: "1",
+    backgroundColor: "#3c0747",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    height:"100vh"
+    
+  }}
       >
         <h1
           style={{
@@ -88,7 +93,6 @@ const AddProduct = () => {
             size="large"
             showSearch
             className="form-select mb-3 "
-            style={{marginLeft:"100px",marginRight:"100px"}}
             onChange={(value) => {
               setcategory(value);
             }}
@@ -100,7 +104,7 @@ const AddProduct = () => {
             ))}
           </Select>
           <div className="mb-3">
-            <label className="btn btn-outline-secondary col-md-12"  style={{marginLeft:"100px",marginRight:"100px"}}>
+            <label className="btn btn-outline-secondary col-md-12">
               {image ? image.name : "Upload image..."}
 
               <input
@@ -131,7 +135,6 @@ const AddProduct = () => {
               placeholder="write a name"
               className="form-control"
               onChange={(e) => setTitle(e.target.value)}
-              style={{marginLeft:"150px",marginRight:"150px"}}
             />
           </div>
           <div className="mb-3">
@@ -141,7 +144,7 @@ const AddProduct = () => {
               placeholder="write a description"
               className="form-control"
               onChange={(e) => setDescription(e.target.value)}
-              style={{marginLeft:"150px",marginRight:"150px"}}
+  
             />
           </div>
           <div className="mb-3">
@@ -151,7 +154,7 @@ const AddProduct = () => {
               placeholder="write a Price"
               className="form-control"
               onChange={(e) => setPrice(e.target.value)}
-              style={{marginLeft:"150px",marginRight:"150px"}}
+             
             />
           </div>
           <div className="mb-3">
@@ -161,11 +164,11 @@ const AddProduct = () => {
               placeholder="write a quantity"
               className="form-control"
               onChange={(e) => setQuantity(e.target.value)}
-              style={{marginLeft:"150px",marginRight:"150px"}}
+             
             />
           </div>
           <div className="mb-3">
-            <button className="btn btn-primary" style={{marginLeft:"150px",marginRight:"150px"}} onClick={handleCreate}>
+            <button className="btn btn-primary" onClick={handleCreate}>
               CREATE PRODUCT
             </button>
           </div>

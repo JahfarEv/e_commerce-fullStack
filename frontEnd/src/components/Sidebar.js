@@ -16,12 +16,16 @@ const Sidebar = () => {
     <div
       style={{
         display: "flex",
-        height: "580vh",
-        overflow: "scroll initial",
-        
+        height: "100vh",
+        overflow: "auto",
+        position:"fixed",
       }}
     >
-      <CDBSidebar textColor="#fff" backgroundColor="black">
+      <CDBSidebar textColor="#fff" backgroundColor="black"  style={{
+      borderRadius: "10px",
+      position: "sticky",
+      top: "0",
+      height: "100vh"}}>
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
           <a
             href="/"

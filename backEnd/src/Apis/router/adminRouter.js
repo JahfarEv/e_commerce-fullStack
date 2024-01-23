@@ -6,6 +6,7 @@ const admToken = require('../middlewares/adminAuthMiddleware')
 
 
 adminRouter.post('/login',(adminController.adminLogin))
+// .use(admToken)
 .get('/users',(adminController.allUsers))
 .get('/users/:id',(adminController.getUserById))
 .post('/category/create',(adminController.createCategory))
@@ -19,6 +20,5 @@ adminRouter.post('/login',(adminController.adminLogin))
 .delete('/delete-category/:id',(adminController.deleteCategory))
 .get('/category/:slug',(adminController.allProduct))
 .get('/product/:id',(adminController.specificProduct))
-.use(admToken)
 
 module.exports = adminRouter

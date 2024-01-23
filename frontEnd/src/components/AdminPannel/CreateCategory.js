@@ -95,19 +95,27 @@ const handleDelete = async(id)=>{
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
-      <div style={{ flex: "1",  backgroundColor: "#3c0747" }}>
-        <h1 style={{color:'white'}} className="p-3 mt-5">Manage Category</h1>
-        <div className="p-3 w-75">
+      <div       style={{
+    flex: "1",
+    backgroundColor: "#3c0747",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    height:"100vh"
+    
+  }}>
+        <h3 style={{color:'white'}} className="p-3 mt-5">Manage Category</h3>
+        <div className= "w-50">
           <CategoryForm 
             handleSubmit={handleSubmit}
             value={name}
             setValue={setName}
           />
         </div>
-        <div className="p-3 w-75" >
+        <div className="d-flex flex-column p-3 w-50 " >
           <table className="table" >
-            <thead>
-              <tr>
+            <thead >
+              <tr  className="text-center">
                 <th scope="col">Name</th>
                 <th scope="col">Update</th>
                 <th scope="col">Remove</th>
@@ -117,9 +125,9 @@ const handleDelete = async(id)=>{
             <tbody>
               {categories.map((c) => (
                 <>
-                  <tr>
-                    <td key={c.id}>{c.name}</td>
-                    <td>
+                  <tr  className="text-center">
+                    <td key={c.id} >{c.name}</td>
+                    <td  className="text-center">
                       <button className="btn btn-primary ms-2" onClick={()=>{setVisible(true); 
                       setUpdatedName(c.name);
                       setSelected(c);

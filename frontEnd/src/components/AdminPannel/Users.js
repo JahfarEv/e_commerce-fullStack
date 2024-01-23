@@ -27,25 +27,35 @@ const Users = () => {
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
-      <div style={{ flex: "1", textAlign: "center",backgroundColor:"#3c0747" }}>
+      <div  style={{
+    flex: "1",
+    backgroundColor: "#3c0747",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    height:"100vh"
+    
+  }}>
       <h1 style={{color:"white",marginTop:"10px",fontWeight:"bold"}}>Users Details</h1>
-        <Table striped bordered hover size="sm" style={{ margin: "0 auto",marginTop:"25px" }}>
+      <div className="d-flex flex-column w-50 " >
+        <Table >
           <thead >
             <tr>
               
               <th>Name</th>
-              <th>Email</th>
+              <th className="text-center">Email</th>
             </tr>
           </thead>
           {user.map((item) => (
             <tbody>
               <tr>
                 <td>{item.name}</td>
-                <td>{item.email}</td>
+                <td className="text-center">{item.email}</td>
               </tr>
             </tbody>
           ))}
         </Table>
+        </div>
       </div>
     </div>
   );
