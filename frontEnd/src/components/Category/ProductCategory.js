@@ -16,8 +16,8 @@ const ProductCategory = () => {
     
 
 useEffect(()=>{
-if(params.slug) getProductsByCategory()
-},[params.slug])
+if(params?.slug) getProductsByCategory()
+},[params?.slug])
 
     const getProductsByCategory = async()=>{
         try {

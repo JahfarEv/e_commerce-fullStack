@@ -96,7 +96,7 @@ console.log(error);
                     fontWeight: "bold",
                   }}
                 >
-                  {item.title}
+                 Name: {item.title}
                 </Card.Title>
                 <Card.Title
                   style={{
@@ -105,11 +105,20 @@ console.log(error);
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {item.description}
+                  Description:{item.description}
+                </Card.Title>
+                <Card.Title
+                  style={{
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                Category:  {item.category}
                 </Card.Title>
                 <Card.Title>
                   <i class="bi bi-currency-rupee"></i>
-                  <span className="h4">{item.price}</span>
+                  <span className="h4">:{item.price}</span>
                 </Card.Title>
                 <Button
                   onClick={handleClick}

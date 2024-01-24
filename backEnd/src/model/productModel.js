@@ -4,7 +4,11 @@ const productModel = new mongoose.Schema({
     Image:String,
     price:{type : Number , required:true},
     description: String,
-    category:String, 
+    category:{
+        type: mongoose.ObjectId,
+        ref: "Category",
+        required: true
+    },
     quantity:Number
 
 });

@@ -74,9 +74,8 @@ exports.viewProducts = asyncErrorHandler(async (req, res) => {
 });
 //Products view by category
 exports.productByCategory = async (req, res) => {
-  
   const category = await categoryModel.findOne({ slug: req.params.slug });
-  const products = await product.find({ category }).populate('category');
+  const products = await product.find({ category }).populate("category");
   console.log(products);
 
   try {
@@ -119,64 +118,69 @@ exports.productById = asyncErrorHandler(async (req, res, next) => {
 
 //filters
 
-exports.productFilters =async(req,res)=>{
-try {
-  const {checked} = req.body
-  let arg  ={}
-  if(checked.length >0) arg.category = checked
-const products = await product.find(arg)
-res.status(200).json({
-  status:'success',
-  products
-
-})
-} catch (error) {
-  console.log(error);
-  res.status(400).json({
-    status:'error',
-    message:'Error while filtering product'
-  })
-}
-}
+exports.productFilters = async (req, res) => {
+  try {
+    const { checked } = req.body;
+    let arg = {};
+    if (checked.length > 0) arg.category = checked;
+    const products = await product.find(arg);
+    res.status(200).json({
+      status: "success",
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      status: "error",
+      message: "Error while filtering product",
+    });
+  }
+};
 
 //product count
 
-// exports.productCount =async (req,res)=>{
-// try {
-//   const total = await product.find({}).estimatedDocumentCount()
-//   res.status(200).json({
-//     status:'success',
-//     data:total
-//   })
-// } catch (error) {
-//   console.log(error);
-//   res.status(400).json({
-//     status:'error',
-//     message:'Error in product count'
-//   })
-// }
-// }
+exports.productCount = async (req, res) => {
+  try {
+    const total = await product.find({}).estimatedDocumentCount();
+    console.log(total);
+    res.status(200).json({
+      status: "success",
+      total,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      status: "error",
+      message: "Error in product count",
+    });
+  }
+};
 
 //product list base on page
 
-// exports.productList = async(req,res)=>{
-//   try {
-//     const perPage = 6
-//     const page = req.params.page ? req.params.page:1
-//     const products = product.find({}).select("-image").skip((page - 1)* perPage).limit(perPage).sort({createdAt: -1})
+exports.productList = async (req, res) => {
+  try {
+    const perPage = 5;
+    const page = req.params.page ? req.params.page : 1;
+    const products =await product
+      .find({})
+      .select("-image")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .sort({ createdAt: -1 });
 
-//     res.status(200).json({
-//       status:'success',
-//       data:products
-//     })
-//   } catch (error) {
-//     console.log(error);
-//     res.status(400).json({
-//       status:'error',
-//       message:'error in per page control'
-//     })
-//   }
-// }
+    res.status(200).json({
+      status: "success",
+      data: products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      status: "error",
+      message: "error in per page control",
+    });
+  }
+};
 
 //add to cart
 exports.addToCart = asyncErrorHandler(async (req, res, next) => {
@@ -259,7 +263,7 @@ exports.deleteFromCart = asyncErrorHandler(async (req, res) => {
     });
   }
   const index = findCart.products.indexOf(productId);
-  const removeProduct = findCart.products[index+1];
+  const removeProduct = findCart.products[index + 1];
   findCart.products.splice(removeProduct, 1);
 
   await findCart.save();
@@ -269,7 +273,7 @@ exports.deleteFromCart = asyncErrorHandler(async (req, res) => {
 });
 
 //Add to wishList
-exports.addToWishlist =asyncErrorHandler (async (req, res) => {
+exports.addToWishlist = asyncErrorHandler(async (req, res) => {
   const userId = req.params.id;
   console.log(userId);
   if (!userId) {
@@ -278,7 +282,7 @@ exports.addToWishlist =asyncErrorHandler (async (req, res) => {
       message: "user id not found",
     });
   }
-  const {productId} = req.body;
+  const { productId } = req.body;
   console.log(productId);
   const products = product.findById(productId);
 
@@ -288,66 +292,73 @@ exports.addToWishlist =asyncErrorHandler (async (req, res) => {
       message: "Product not found",
     });
   }
-  
-  await userSchema.updateOne({ _id: userId },{$push:{wishlist:productId}});
-  res.status(200).json({
-    status:'success',
-    message:'Product add to wish list',
-    
 
-  })
-}
-)
+  await userSchema.updateOne(
+    { _id: userId },
+    { $push: { wishlist: productId } }
+  );
+  res.status(200).json({
+    status: "success",
+    message: "Product add to wish list",
+  });
+});
 //view wish list
 
-exports.viewWishlist=asyncErrorHandler(async(req,res)=>{
-  const userId=req.params.id;
-  if(!mongoose.Types.ObjectId.isValid(userId)){
-     return res.status(400).json({
-          status:'error',
-          message:'invalid user ID format'
-      })
+exports.viewWishlist = asyncErrorHandler(async (req, res) => {
+  const userId = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({
+      status: "error",
+      message: "invalid user ID format",
+    });
   }
-  const user=await userSchema.findById(userId)
+  const user = await userSchema.findById(userId);
   // console.log(user);
-  if(!user){
-      return res.status(404).json({
-          status:'fail',
-          message:'user not found'
-      })
+  if (!user) {
+    return res.status(404).json({
+      status: "fail",
+      message: "user not found",
+    });
   }
-  const wishlistIds=user.wishlist;
-  if(wishlistIds.length===0){
-     return res.status(200).json({
-          status:'success',
-          message:'user wishlist is empty ',
-          data:[]
-      })
+  const wishlistIds = user.wishlist;
+  if (wishlistIds.length === 0) {
+    return res.status(200).json({
+      status: "success",
+      message: "user wishlist is empty ",
+      data: [],
+    });
   }
-  const wishlistProducts=await product.find({_id:{$in:wishlistIds}})
-  
-      res.status(200).json({
-          status:'success',
-          message:'successfully feched user wishlist products',
-          data:wishlistProducts
-      })
-})
+  const wishlistProducts = await product.find({ _id: { $in: wishlistIds } });
+
+  res.status(200).json({
+    status: "success",
+    message: "successfully feched user wishlist products",
+    data: wishlistProducts,
+  });
+});
 
 //delete wishlist
 
-exports.deleteWishlist=asyncErrorHandler(async(req,res)=>{
-  const userId=req.params.id;
-  const {productId}=req.body;
-  if(!productId){
-      return res.status(404).json({status:'fail',message:'product not found'})
+exports.deleteWishlist = asyncErrorHandler(async (req, res) => {
+  const userId = req.params.id;
+  const { productId } = req.body;
+  if (!productId) {
+    return res
+      .status(404)
+      .json({ status: "fail", message: "product not found" });
   }
-  const user=await userSchema.findById(userId);
-  if(!user){
-      return res.status(404).json({status:'fail',message:'user not found'})
+  const user = await userSchema.findById(userId);
+  if (!user) {
+    return res.status(404).json({ status: "fail", message: "user not found" });
   }
-  await userSchema.updateOne({_id:userId},{$pull:{wishlist:productId}})
-  res.status(200).json({status:'success',message:'successfully remove product'})
-})
+  await userSchema.updateOne(
+    { _id: userId },
+    { $pull: { wishlist: productId } }
+  );
+  res
+    .status(200)
+    .json({ status: "success", message: "successfully remove product" });
+});
 
 //payments
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);

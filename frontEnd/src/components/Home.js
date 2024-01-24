@@ -18,13 +18,15 @@ const Home = () => {
   const [products, setProduct] = useState([]);
   const [category, setCategory] = useState([]);
   const [checked,setChecked] = useState([])
+  const [total,setTotal] = useState(0)
+  const [page,setPage] = useState(1)
+  const [loading,setLoading] = useState(false)
 
   
 
   const getCategory =async ()=>{
     try {
       const response = await axios.get('http://127.0.0.1:4000/api/admin/category/get-category')
-    console.log(response.data);
     if(response.status === 200){
       setCategory(response.data.data.category)
     }
@@ -34,36 +36,55 @@ const Home = () => {
         }
 useEffect(()=>{
 getCategory()
+getTotal()
 
 },[])
 
 
   const getProducts = async () => {
     try {
+      setLoading(true)
       const response = await axios.get(
-        "http://127.0.0.1:4000/api/users/products"
+        `http://127.0.0.1:4000/api/users/product-list/${page}`
       );
-      
+      setLoading(false)
       if (response.status === 200) {
-        setProduct(response.data.data.products);
-        toast.success("Product fetched successfully");
+        setProduct(response.data.data);
       }
     } catch (error) {
-      
+      setLoading(false)
       console.log(error);
       toast.error("error");
     }
   };
 //getTotal count
 
-// const getTotal = async()=>{
-//   try {
-//     const {data} = await axios.get('http://127.0.0.1:4000/api/users/product-count')
-//     setTotal(data.total)
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+const getTotal = async()=>{
+  try {
+    const {data} = await axios.get('http://127.0.0.1:4000/api/users/product-count')
+    setTotal(data?.total)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+useEffect(()=>{
+if(page === 1) return;
+loadMore()
+},[page])
+//loadmore
+const loadMore = async () => {
+  try {
+    setLoading(true);
+    const { data } = await axios.get(`http://127.0.0.1:4000/api/users/product-list/${page}`);
+    console.log(data);
+    setLoading(false);
+    setProduct([...products, ...data?.data]);
+  } catch (error) {
+    setLoading(false);
+    console.log(error);
+  }
+};
 
   //filter by category
   const handleFilter =(value,id)=>{
@@ -152,7 +173,7 @@ if(checked.length) filterProduct()
 
 
         <div className="row justify-content-center " style={{margin:"15px"}}>
-        {JSON.stringify(checked,null,4)}
+        
           {products.map((item) => (
             <Card
               style={{ width: "16rem", height: "auto" }}
@@ -188,13 +209,27 @@ if(checked.length) filterProduct()
             </Card>
           ))}
         </div>
-        {/* <div className="m-2 p-2">{products && products.length < total &&(
-          <button className="btn btn-warning" onClick={(e)=>{e.preventDefault(); setPage(page + 1)}}>{loading ? "Loading..." :"Loadmore"}</button>
-        )}</div> */}
+        
         </div>
+        <div className="m-2 p-3">
+        {products && products.length < total && (
+              <button
+                className="btn btn-warning"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setPage(page + 1);
+                }}
+              >
+                {loading ? "Loading ..." : "Loadmore"}
+              </button>
+        )}
+          </div>
         
       </Container>
-      
+      {/* <div className="m-2 p-2">{products && products.length < total &&(
+          <button className="btn btn-warning" onClick={(e)=>{e.preventDefault(); setPage(page + 1)}}>{loading ? "Loading..." :"Loadmore"}</button>
+        )}</div> */}
+        
       <div
         style={{
           border: "none solid black",
