@@ -90,6 +90,7 @@ const createProduct = asyncErrorHandler(async (req, res) => {
     price,
     description,
     category,
+    slug:slugify(title),
     quantity:1
   });
   console.log(category.name);
@@ -131,26 +132,21 @@ const deleteProduct = asyncErrorHandler(async (req, res) => {
 // update products
 
 const updateProduct = asyncErrorHandler(async (req, res) => {
-  const {id,title,description,image,category,price} = req.body;
-  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-    res.status(404).json({
-      status: "error",
-      message: "invalid product id",
-    });
-  }
-  const updatedProduct = await product.findByIdAndUpdate({ _id: id },{title,description,image,category,price},
-    {new:true})
-  if (!updatedProduct) {
-    res.status(404).json({
-      status: "error",
-      message: "product not found",
-    });
-  }
-  res.status(200).json({
-    status: "succes",
-    message: "product updated",
+  const {id} = req.params
+  const { title, image, price, description, category,name } = req.body;
+  const updateProduct = await product.findByIdAndUpdate(id,{
+    title,
+     image,
+    price,
+    description,
+    category,
+    quantity:1,
+    slug:slugify(name)
+  },{new:true}).save();
+  res.status(201).json({
+    status: "sucess",
     data: {
-      product: updatedProduct,
+      product: updateProduct,
     },
   });
 });
@@ -271,7 +267,7 @@ const deleteCategory =asyncErrorHandler(async (req,res)=>{
 
 const viewProduct = asyncErrorHandler (async (req,res)=>{
 
-  const products = await product.find()
+  const products = await product.find({}).populate('category')
   if (!products) {
     return res.status(404).json({
       status: "error",
@@ -309,15 +305,15 @@ const allProduct = asyncErrorHandler(async (req, res, next) => {
 
 //view specific product
 
-const specificProduct = asyncErrorHandler(async (req, res, next) => {
-  const productId = req.params.id;
-  if (!mongoose.Types.ObjectId.isValid(productId)) {
-    res.status(404).json({
-      status: "error",
-      message: "invalid id",
-    });
-  }
-  const productById = await product.findById(productId);
+const specificProduct = asyncErrorHandler(async (req, res) => {
+  // const productId = req.params.id;
+  // if (!mongoose.Types.ObjectId.isValid(productId)) {
+  //   res.status(404).json({
+  //     status: "error",
+  //     message: "invalid id",
+  //   });
+  // }
+  const productById = await product.findOne({slug:req.params.slug}).populate('category');
   console.log(productById);
   if (!productById) {
     res.status(404).json({

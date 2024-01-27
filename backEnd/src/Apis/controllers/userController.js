@@ -57,7 +57,7 @@ exports.login = asyncErrorHandler(async (req, res, next) => {
 
 //view products
 exports.viewProducts = asyncErrorHandler(async (req, res) => {
-  const products = await product.find();
+  const products = await product.find({}).populate('category');
   if (!products) {
     return res.status(404).json({
       status: "error",
@@ -74,11 +74,12 @@ exports.viewProducts = asyncErrorHandler(async (req, res) => {
 });
 //Products view by category
 exports.productByCategory = async (req, res) => {
+  try {
   const category = await categoryModel.findOne({ slug: req.params.slug });
-  const products = await product.find({ category }).populate("category");
+  const products = await product.find({category}).populate("category");
   console.log(products);
 
-  try {
+  
     res.status(200).json({
       status: "success",
       message: "Product fetched successfully",
@@ -95,14 +96,14 @@ exports.productByCategory = async (req, res) => {
 // View a specific product
 
 exports.productById = asyncErrorHandler(async (req, res, next) => {
-  const productId = req.params.id;
-  if (!mongoose.Types.ObjectId.isValid(productId)) {
-    res.status(404).json({
-      status: "error",
-      message: "invalid id",
-    });
-  }
-  const products = await product.findById(productId);
+  // const productId = req.params.id;
+  // if (!mongoose.Types.ObjectId.isValid(productId)) {
+  //   res.status(404).json({
+  //     status: "error",
+  //     message: "invalid id",
+  //   });
+  // }
+  const products = await product.findOne({slug:req.params.slug}).populate('category');
   if (!products) {
     const error = new customError("not found", 404);
     return next(error);

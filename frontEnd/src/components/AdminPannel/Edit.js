@@ -1,32 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Sidebar from "../Sidebar";
-import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import { Select } from "antd";
-const { Option } = Select;
-// import category from "../../../backEnd/src/model/categoryModel";
+const { Option } = Select
 
 const Edit = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const [product,setProduct] = useState({
-    title: "",
-    description: "",
-    image: "",
-    price: "",
-    category: ""
-  })
-  const[categories,setCategories] = useState([])
+const {slug} = useParams()
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [quantity, setQuantity] = useState("");
   const [category, setcategory] = useState("");
-  const [image,setImage] = useState("")
+  
+
+  //get single product 
+
+  const getSingleProduct = async ()=>{
+    
+try {
+  const {data} =  await axios.get(`http://127.0.0.1:4000/api/admin/product/${slug}`);
+  if(data.status === 200){
+  console.log(data);
+  setTitle(data.data.products.title)
+}
+} catch (error) {
+  console.log(error);
+}
+  }
+  useEffect(()=>{
+getSingleProduct()
+    //eslint-disable-next-line
+
+  },[slug])
+
   const allCategories = async () => {
     try {
       const response = await axios.get(
         "http://127.0.0.1:4000/api/admin/category/get-category"
       );
-      console.log(response);
       if (response.status === 200) {
         setCategories(response.data.data.category);
       }
@@ -39,71 +56,64 @@ const Edit = () => {
     allCategories();
   }, []);
 
+  //create product function
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("image", image);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("category", category);
+      formData.append("quantity", quantity);
 
-  useEffect(()=>{
-    const fetchProducts = async()=>{
-try {
-  const response = await axios.get(`http://127.0.0.1:4000/api/admin/product/${id}`)
-  console.log(response.data.data.productById);
-const {_id,title,description,image,price,category} = response.data.data.productById
-setProduct({
-  id:_id,
-  title,
-  description,
-  image,
-  price,
-  category
-
-
-})
-
-} catch (error) {
-  console.log(error);
-}
+      const response = await axios.post(
+        "http://127.0.0.1:4000/api/admin/addProduct",
+        formData
+      );
+      if (response.status === 201) {
+        toast.success("Product create successfully");
+        // navigate("/ProductList");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong");
     }
-    fetchProducts()
-  },[id])
+  };
 
-  const updateProduct =async (e)=>{
-e.preventDefault()
-try {
-  const response = await axios.patch(`http://127.0.0.1:4000/api/admin/update`,product)
-console.log(response);
-  if(response.status === 200){
-    console.log('Product updated successfully');
-    toast.success('Product updated successfully')
-    navigate('/ProductList')
-  }
-} catch (error) {
-  console.log(error);
-}
-  }
-
-  const handleChange = (a)=>{
-const {name,value} = a.target;
-setProduct((data)=>({
-  ...data,
-  [name]:value
-}))
-
-}
   return (
-    <div style={{ display: "flex" }}>
+    <div className="d-flex ">
       <Sidebar />
-      <div style={{ flex: "1", textAlign: "center" , backgroundColor: "#3c0747" }}>
-        <h1
+      
+      <div
+        style={{
+    flex: "1",
+    backgroundColor: "#3c0747",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    height:"100vh",
+    
+  }}
+      >
+      
+        <h3
           style={{
-            
-            padding: "10px",
-            position: "relative",
-           margin:"10px",
+            // position: "relative",
+            top: "15px",
             color: "white",
-          }} className="mt-5"
+            textAlign:"center",
+            marginLeft:"25%",
+            marginTop:"70px",
+            marginBottom:"40px"
+          }}
         >
-         Update Products
-        </h1>
-        <div className="m-1 w-75">
-        <Select
+          EDIT PRODUCT
+        </h3>
+        <div className="m-1 w-50" >
+          <Select
+          style={{marginLeft:"25%",marginRight:"25%"}}
             bordered={false}
             placeholder="Select category"
             size="large"
@@ -119,40 +129,12 @@ setProduct((data)=>({
               </Option>
             ))}
           </Select>
-        <br />
-        <hr />
-        <Form onSubmit={updateProduct}>
-          
-          <div className="mb-3">
-          <input
-            className="form-control"
-           placeholder="Write a title"
-            type="text"
-            name="title"
-            value={product.title}
-            onChange={handleChange}
-          />
-          </div>
-         
-          <br />
-          <div className="mb-3">
-          <input
-            className="form-control"
-            
-            placeholder="Write a price"
-            type="number"
-            name="price"
-           value={product.price}
-           onChange={handleChange}
-          />
-          </div>
-         
-<br/>
-          <div className="mb-3">
+          <div className="mb-3"style={{marginLeft:"25%",marginRight:"25%"}} >
             <label className="btn btn-outline-secondary col-md-12">
               {image ? image.name : "Upload image..."}
 
               <input
+              
                 type="file"
                 name="image"
                 accept="image/*"
@@ -161,55 +143,68 @@ setProduct((data)=>({
               />
             </label>
           </div>
-          <div className="mb-3">
+          <div className="mb-3" >
             {image && (
-              <div className="text-center">
+              <div className="text-center"  >
                 <img
                   src={URL.createObjectURL(image)}
                   alt="product photo"
                   height={"200px"}
                   className="img img-responsive"
+                  
                 />
               </div>
             )}
           </div>
-
-          {/* <label style={{ fontSize: "20px" }}> Product Image </label> */}
-          {/* <br />
-          <input
-            className="shadow"
-            style={{
-              height: "45px",
-              width: "500px",
-              border: "none",
-              borderRadius: "3px",
-              textAlign: "center",
-            }}
-            placeholder="Upload image"
-            type="text"
-            name="image"
-            value={product.image}
-            onChange={handleChange}
-          />
-          <br />
-          <br /> */}
-
-         
-          <br />
-          <Button
-            type="submit"
-            style={{
-              backgroundColor: "black",
-              border: "none",
-              height: "40px",
-              width: "100px",
-            }}
-          >
-            Save
-          </Button>
-        </Form>
+          <div className="mb-3" >
+            <input
+             style={{marginLeft:"25%",marginRight:"25%"}}
+              type="text"
+              value={title}
+              placeholder="write a name"
+              className="form-control"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <textarea
+             style={{marginLeft:"25%",marginRight:"25%"}}
+              type="text"
+              value={description}
+              placeholder="write a description"
+              className="form-control"
+              onChange={(e) => setDescription(e.target.value)}
+  
+            />
+          </div>
+          <div className="mb-3">
+            <input
+             style={{marginLeft:"25%",marginRight:"25%"}}
+              type="number"
+              value={price}
+              placeholder="write a Price"
+              className="form-control"
+              onChange={(e) => setPrice(e.target.value)}
+             
+            />
+          </div>
+          <div className="mb-3">
+            <input
+             style={{marginLeft:"25%",marginRight:"25%"}}
+              type="number"
+              value={quantity}
+              placeholder="write a quantity"
+              className="form-control"
+              onChange={(e) => setQuantity(e.target.value)}
+             
+            />
+          </div>
+          <div className="mb-3">
+            <button className="btn btn-primary" style={{marginLeft:"25%",marginRight:"25%"}} onClick={handleCreate}>
+              Submit
+            </button>
+          </div>
         </div>
-
       </div>
     </div>
   );

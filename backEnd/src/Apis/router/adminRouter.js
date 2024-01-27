@@ -14,11 +14,11 @@ adminRouter.post('/login',(adminController.adminLogin))
 .get('/view',(adminController.viewProduct))
 .post('/addProduct',uploadCloudinary,adminController.createProduct)
 .delete('/products',(adminController.deleteProduct))
-.patch('/update',(adminController.updateProduct))
+.put('/update/:id',(adminController.updateProduct))
 .put('/update-category/:id',(adminController.updateCategory))
 .get('/single-category/:slug',(adminController.singleCategory))
 .delete('/delete-category/:id',(adminController.deleteCategory))
 .get('/category/:slug',(adminController.allProduct))
-.get('/product/:id',(adminController.specificProduct))
+.get('/product/:slug',(adminController.specificProduct))
 
 module.exports = adminRouter
