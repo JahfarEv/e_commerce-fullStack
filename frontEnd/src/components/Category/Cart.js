@@ -18,6 +18,19 @@ const Cart = () => {
     getCart();
   }, []);
 
+  //total price
+  const totalPrice = ()=>{
+    try {
+      let total = 0
+      cart.map((item)=>{
+        total = total+item.price
+      })
+      return total
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const deleteFromCart = async (id) => {
     try {
       const productId = id;
@@ -71,7 +84,7 @@ const Cart = () => {
                   {" "}
                   <i class="bi bi-currency-rupee"></i>
                   {item.price}
-                  {item.quantity}
+                  
                 </p>
                 <div className="input-group">
                   <button
@@ -120,7 +133,7 @@ const Cart = () => {
         </ul>
         <div className="d-flex justify-content-between align-items-center">
           <p className="mt-3" style={{ fontSize: "25px", fontWeight: 600 }}>
-            Your Total Amount :
+            Your Total Amount :{totalPrice()}
           </p>
           <p className="mt-3" style={{ fontSize: "25px", fontWeight: 600 }}>
             {/* <i class="bi bi-currency-rupee"></i>{totalAmount} */}

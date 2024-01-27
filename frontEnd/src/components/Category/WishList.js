@@ -5,6 +5,7 @@ import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../Nav'
+import { Axios } from '../../App';
 
 const WishList = () => {
     const navigate =useNavigate()
@@ -14,7 +15,7 @@ const WishList = () => {
     useEffect(()=>{
         const wishList = async()=>{
 try {
-    const response = await axios.get(`http://127.0.0.1:4000/api/users/viewlist/${userId}`)
+    const response = await Axios.get(`api/users/viewlist/${userId}`)
     setWishList(response.data.data)
     console.log(response);
 } catch (error) {

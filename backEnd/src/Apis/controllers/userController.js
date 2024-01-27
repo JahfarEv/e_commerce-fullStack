@@ -95,18 +95,20 @@ exports.productByCategory = async (req, res) => {
 
 // View a specific product
 
-exports.productById = asyncErrorHandler(async (req, res, next) => {
-  // const productId = req.params.id;
-  // if (!mongoose.Types.ObjectId.isValid(productId)) {
-  //   res.status(404).json({
-  //     status: "error",
-  //     message: "invalid id",
-  //   });
-  // }
-  const products = await product.findOne({slug:req.params.slug}).populate('category');
+exports.productById = asyncErrorHandler(async (req, res) => {
+  const productId = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    res.status(404).json({
+      status: "error",
+      message: "invalid id",
+    });
+  }
+  const products = await product.findOne({_id:productId});
   if (!products) {
-    const error = new customError("not found", 404);
-    return next(error);
+    res.status(500).json({
+      status:'error',
+      message:'product not found'
+    })
   } else {
     res.status(200).json({
       status: "succes",

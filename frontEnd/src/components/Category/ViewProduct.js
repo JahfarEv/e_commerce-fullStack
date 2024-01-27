@@ -23,7 +23,7 @@ const ViewProduct = () => {
         const response = await Axios.get(
           `api/users/product/${id}`
         );
-        console.log(response.data.data.products);
+        console.log(response);
         if (response.status === 200) {
           setViewProduct(response.data.data.products);
         }
@@ -114,7 +114,7 @@ console.log(error);
                     whiteSpace: "nowrap",
                   }}
                 >
-                Category:  {item.category}
+                Category:  {item.name}
                 </Card.Title>
                 <Card.Title>
                   <i class="bi bi-currency-rupee"></i>

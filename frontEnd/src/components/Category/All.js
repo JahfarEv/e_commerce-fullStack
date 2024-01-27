@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Container from "react-bootstrap/esm/Container";
 import { useNavigate, useParams } from "react-router-dom";
-import { shopContext } from "../../App";
+import { Axios, shopContext } from "../../App";
 import Nav from "../Nav";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Footer from "../Footer";
@@ -19,6 +19,7 @@ const All = () => {
   const [products,setProduct] = useState([])
   const navigate = useNavigate();
   const [searchItem, setSearchItem] = useState("");
+  const [wishList,setWishList] = useState([])
   const {id} = useParams()
   
  
@@ -28,7 +29,7 @@ useEffect(()=>{
 const response = await axios.get('http://127.0.0.1:4000/api/users/products');
 if(response.status === 200){
   setProduct(response.data.data.products);
-  toast.success('Product fetched successfully')
+
 }
     }
     catch (error){
@@ -53,10 +54,12 @@ const search = products.filter((val) => {
 
 const addToWishlist = async (id) => {
 try {
-  const response = await axios.post(`http://127.0.0.1:4000/api/users/wishlist/${userId}`,
+  const response = await Axios.post(`api/users/wishlist/${userId}`,
   {productId:id})
-toast.success('Product added successfully')
-
+  if(response.status === 200){
+    console.log(response);
+    setWishList(response.data.data.products);
+  }
 } catch (error) {
   console.log(error);
 }

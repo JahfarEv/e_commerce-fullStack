@@ -6,6 +6,8 @@ import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Container from "react-bootstrap/esm/Container";
+import Nav from '../Nav';
+import  Footer  from '../Footer';
 
 
 const ProductCategory = () => {
@@ -30,12 +32,12 @@ if(params?.slug) getProductsByCategory()
         }
     }
   return (
-    <div>
-      <div className='container'>
-<h1>{category.name}</h1>
-<h1>{products.length}</h1>
-      </div>
+    <div style={{ backgroundColor: "#3c0747",height:"100%" }}>
+      <Nav/>
 
+      <div style={{border:"none solid black", width:'100%',height:'2px',backgroundColor:'white'}}></div>
+
+<Container>
       
       <div className="row justify-content-center " style={{margin:"15px"}}>
         {/* {JSON.stringify(checked,null,4)} */}
@@ -77,6 +79,9 @@ if(params?.slug) getProductsByCategory()
         {/* <div className="m-2 p-2">{products && products.length < total &&(
           <button className="btn btn-warning" onClick={(e)=>{e.preventDefault(); setPage(page + 1)}}>{loading ? "Loading..." :"Loadmore"}</button>
         )}</div> */}
+        </Container>
+        <Footer />
+
         </div>
      
   

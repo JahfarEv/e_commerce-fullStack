@@ -25,6 +25,7 @@ const {slug} = useParams()
     
 try {
   const {data} =  await axios.get(`http://127.0.0.1:4000/api/admin/product/${slug}`);
+  
   if(data.status === 200){
   console.log(data);
   setTitle(data.data.products.title)
@@ -74,7 +75,7 @@ getSingleProduct()
       );
       if (response.status === 201) {
         toast.success("Product create successfully");
-        // navigate("/ProductList");
+        navigate("/ProductList");
       }
     } catch (error) {
       console.log(error);
