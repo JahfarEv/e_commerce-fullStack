@@ -21,6 +21,7 @@ router.post('/register',(authController.signup))
 .post('/wishlist/:id',(authController.addToWishlist))
 .get('/viewlist/:id',(authController.viewWishlist))
 .post('/payments/:id',(authController.payments))
+.get('/orders',(authController.getOrderController))
 
 
 

@@ -12,6 +12,7 @@ const orders = require("../../model/orderSchema");
 const categoryModel = require("../../model/categoryModel");
 const userSchema = require("../../model/userModel");
 
+
 const signToken = (id) => {
   return jwt.sign({ id, isAdmin: false }, process.env.SECRET_STR, {
     expiresIn: process.env.LOGIN_EXPIRES,
@@ -435,3 +436,18 @@ exports.payments = asyncErrorHandler(async (req, res) => {
 exports.paymentSuccess = (req, res) => {
   res.send("<h1>success</h1>");
 };
+
+// orders
+
+exports.getOrderController = async(req,res)=>{
+  try {
+    const orders = await orders.find({buyer:req.user._id}).populate('products','-image').populate("buyer")
+    res.json
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status:'error',
+      message:'Error while getting orders'
+    })
+  }
+}

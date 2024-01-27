@@ -23,6 +23,7 @@ import CreateCategory from "./components/AdminPannel/CreateCategory";
 import axios from "axios";
 import ProductCategory from "./components/Category/ProductCategory";
 import WishList from "./components/Category/WishList";
+import UserDashbord from "./components/user/UserDashbord";
 
 export const shopContext = createContext();
 
@@ -80,6 +81,7 @@ function App() {
             <Route path="/productList" element={<ProductList />} />
             <Route path="/edit/:id" element={<Edit />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/user-dashbord" element={<UserDashbord />} />
           </Routes>
         </BrowserRouter>
       </shopContext.Provider>

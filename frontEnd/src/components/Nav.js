@@ -16,7 +16,7 @@ import useCategory from "../hooks/useCategory";
 import { Link } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FaRegHeart } from "react-icons/fa";
-const user = localStorage.getItem("username")
+const user = localStorage.getItem("username");
 console.log(user);
 function NavScroll() {
   const { login } = useContext(shopContext);
@@ -78,10 +78,8 @@ function NavScroll() {
                 ))}
               </Dropdown.Menu>
             </Dropdown>
-
-          
           </Nav>
-          <h5 style={{color:"white",marginTop:'10px'}}>hi...{user}</h5>
+          <h5 style={{ color: "white", marginTop: "10px" }}>hi...{user}</h5>
           <Nav className="d-flex">
             <Nav.Link onClick={() => navigate("/cart")} title="cart">
               <FaShoppingCart color="white" fontSize="25px" />
@@ -89,23 +87,22 @@ function NavScroll() {
             <Dropdown.Menu style={{ minWidth: 370 }}>
               <span style={{ padding: 10 }}>Cart is Empty!</span>
             </Dropdown.Menu>
-            {login ? (
-              <Nav.Link
-                onClick={() => navigate("/signin")}
-                className="mx-3"
-                title="Logout"
-              >
-                <IoMdLogOut color="white" fontSize="25px" />
-              </Nav.Link>
-            ) : (
-              <Nav.Link
-                onClick={() => navigate("/signin")}
-                className="mx-0"
-                title="Login"
-              >
-                <FiLogIn color="white" fontSize="25px" />
-              </Nav.Link>
-            )}
+
+            <Dropdown>
+              <Dropdown.Toggle variant="light" id="dropdown-basic">
+                Profile
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                Welcome
+                <Dropdown.Item onClick={() => navigate("/signin")}>
+                LogIn
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate("/signup")}>
+                SignUp
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
 
             <Nav.Link
               onClick={() => navigate("/wishlist")}
