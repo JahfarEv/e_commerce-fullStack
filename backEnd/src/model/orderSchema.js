@@ -4,12 +4,12 @@ const product = require("./productModel");
 
 
 const orderSchema = new mongoose.Schema({
-    usr: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: user
     },
-    prodts: [
+    products: [
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,
@@ -37,6 +37,16 @@ const orderSchema = new mongoose.Schema({
     total_Items: {
       type: Number,
       required: true
+    },
+    payment:{},
+    buyer:{
+      type:mongoose.ObjectId,
+      ref:user
+    },
+    status:{
+      type:String,
+      default:'Not Process',
+      enum:["Not Process", "Procesing", "Shipped", "Deliverd", "Cancel"]
     }
   })
 const orders = mongoose.model('orders',orderSchema)

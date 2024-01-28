@@ -2,12 +2,15 @@ import React, {useEffect, useState } from "react";
 import { Axios } from "../../App";
 import Nav from "../Nav";
 import Footer from "../Footer";
+import { useNavigate } from "react-router-dom";
+
 
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const userId = localStorage.getItem("userId");
-
+  const navigate = useNavigate()
+console.log(userId);
   const getCart = async () => {
     const response = await Axios.get(
       `api/users/viewcart/${userId}`
@@ -50,9 +53,11 @@ const Cart = () => {
       const response = await Axios.post(
         `api/users/payments/${userId}`
       );
+      console.log(response);
 
       const session = response.data.session;
       window.location.href = session;
+      navigate('/orders')
     } catch (error) {
       console.log(error);
     }

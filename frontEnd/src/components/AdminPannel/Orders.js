@@ -4,7 +4,7 @@ import AdmiNav from './AdmiNav';
 import { Axios } from '../../App';
 
 
-export default function Alloders() {
+export default function Orders() {
     const {login} = useContext(Productcontext)
     const [data, setData] = useState([])
     console.log(data)

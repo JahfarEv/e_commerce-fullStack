@@ -13,6 +13,7 @@ router.post('/register',(authController.signup))
 .get('/product-count',(authController.productCount))
 .get('/product-list/:page',(authController.productList))
 .get('/payment/success',(authController.paymentSuccess))
+.get('/user-orders',(authController.getOrderController))
 .use(verifyToken)
 .get('/product/:id',(authController.productById))
 .post('/cart/:id',(authController.addToCart))
@@ -21,7 +22,6 @@ router.post('/register',(authController.signup))
 .post('/wishlist/:id',(authController.addToWishlist))
 .get('/viewlist/:id',(authController.viewWishlist))
 .post('/payments/:id',(authController.payments))
-.get('/orders',(authController.getOrderController))
 
 
 

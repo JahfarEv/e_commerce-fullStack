@@ -413,12 +413,13 @@ exports.payments = asyncErrorHandler(async (req, res) => {
 
   if (session) {
     const order = new orders({
-      usr: findCart.user,
-      prodts: prod,
+      user: findCart.user,
+      products: prod,
       order_Id: session.id,
       total_Price: findCart.totalPrice,
       total_Items: findCart.products.length,
       order_status: session.payment_status,
+      
     });
 
     await order.save();
@@ -441,8 +442,8 @@ exports.paymentSuccess = (req, res) => {
 
 exports.getOrderController = async(req,res)=>{
   try {
-    const orders = await orders.find({buyer:req.user._id}).populate('products','-image').populate("buyer")
-    res.json
+    const orders = await orders.find({user}).populate('products','-image').populate("user")
+    res.json(orders)
   } catch (error) {
     console.log(error);
     res.status(500).json({
