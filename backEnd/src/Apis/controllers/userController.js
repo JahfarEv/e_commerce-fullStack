@@ -164,7 +164,7 @@ exports.productCount = async (req, res) => {
 
 exports.productList = async (req, res) => {
   try {
-    const perPage = 5;
+    const perPage = 8;
     const page = req.params.page ? req.params.page : 1;
     const products =await product
       .find({})
@@ -441,8 +441,10 @@ exports.paymentSuccess = (req, res) => {
 // orders
 
 exports.getOrderController = async(req,res)=>{
+  const userId = req.params.id;
+  const findCart = await cart.findOne({ user: userId });
   try {
-    const orders = await orders.find({user}).populate('products','-image').populate("user")
+    const orders = await orders.find({user:findCart.user})
     res.json(orders)
   } catch (error) {
     console.log(error);

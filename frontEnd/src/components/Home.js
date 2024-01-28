@@ -5,8 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-awesome-slider/dist/styles.css";
-import img1 from "../components/slider/nw3.gif";
-
+import img1 from "../components/slider/new2.jpg";
+import img2 from "../components/slider/nw1.jpg"
 import Footer from "./Footer";
 import Nav from "./Nav";
 import { toast } from "react-toastify";
@@ -122,23 +122,29 @@ if(checked.length) filterProduct()
         style={{
           border: "none solid black",
           width: "100%",
-          height: "20px",
+          height: "2px",
           backgroundColor: "white",
         }}
       ></div>
      
-      {/* <img 
+      <img 
+        src={img2}
+        alt="bannerhome"
+        style={{ width: "50%", cursor: "pointer"}}
+        onClick={() => navigate("/all")}
+      />
+       <img 
         src={img1}
         alt="bannerhome"
-        style={{ width: "100%", cursor: "pointer" }}
+        style={{ width: "50%", cursor: "pointer" }}
         onClick={() => navigate("/all")}
-      /> */}
+      />
 
       <div
         style={{
           border: "none solid black",
           width: "100%",
-          height: "20px",
+          height: "2px",
           backgroundColor: "white",
         }}
       ></div>
@@ -149,34 +155,14 @@ if(checked.length) filterProduct()
 
           <Container>
           <div className="row mt-3">
-          <div className="col-md-3">
-            <h4 className="text-center text-white">Filter by category</h4>
-            {category.map((c)=>(
-              <Checkbox key={c.id} onChange={(e)=>handleFilter(e.target.checked,c._id)}>
-                {c.name}
-              </Checkbox>
-            ))}
-          </div>
-        {/* <div className="d-flex justify-content-center">
-          <Card
-            onClick={() => navigate("/dog")}
-            style={{marginRight: "10px", border:'none',marginTop:'25px',backgroundColor:'#3c0747',width:'50%',height:"80%"}}
-          >
-            
-            <Card.Img variant="top" src={img2} style={{ height: "80%", cursor:'pointer' }} />
-          </Card>
-          <Card onClick={() => navigate("/cat")} style={{border:'none',marginTop:'25px',backgroundColor:'#3c0747',width:'50%',height:'80%'}}>
-           
-            <Card.Img variant="top" src={img3} style={{ height: "80%", cursor:'pointer' }} />
-          </Card>
-        </div> */}
+          
 
 
         <div className="row justify-content-center " style={{margin:"15px"}}>
         
           {products.map((item) => (
             <Card
-              style={{ width: "16rem", height: "auto" }}
+              style={{ width: "17rem", height: "auto" }}
               key={item._id}
               className={`'bg-light-black text-light':'bg-light text-black'} text-center p-0 overflow-hidden shadow mx-auto mb-4`}
             >

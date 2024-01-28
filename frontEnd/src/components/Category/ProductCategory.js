@@ -80,6 +80,8 @@ if(params?.slug) getProductsByCategory()
           <button className="btn btn-warning" onClick={(e)=>{e.preventDefault(); setPage(page + 1)}}>{loading ? "Loading..." :"Loadmore"}</button>
         )}</div> */}
         </Container>
+        <div style={{border:"none solid black", width:'100%',height:'2px',backgroundColor:'white'}}></div>
+
         <Footer />
 
         </div>

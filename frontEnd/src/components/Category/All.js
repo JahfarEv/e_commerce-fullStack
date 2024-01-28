@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Container from "react-bootstrap/esm/Container";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Axios, shopContext } from "../../App";
 import Nav from "../Nav";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -68,10 +68,9 @@ try {
   return (
     <div style={{ backgroundColor: "#3c0747" }}>
       <Nav />
-      <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
+      <div style={{border:"none solid black", width:'100%',height:'2px',backgroundColor:'white'}}></div>
 
       {/* <img src={img1} alt="banner" style={{ width: "100%" }} /> */}
-      <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
       <div
         className="templateContainer "
         style={{ display: "flex", justifyContent: "center", margin: "10px" }}
@@ -101,7 +100,12 @@ try {
               className={`'bg-light-black text-light':'bg-light text-black'} text-center p-0 overflow-hidden shadow mx-auto mb-4`}
             >
               <Card.Body>
-              
+              <Link
+                  onClick={()=>addToWishlist(item._id)}
+                  className={`d-flex align-item-center m-auto border-0 text-danger`}
+                > <FaRegHeart/>
+                  
+                </Link>
                 <Card.Title
                   style={{
                     textOverflow: "ellipsis",
@@ -126,13 +130,8 @@ try {
                 >
                   View Item
                 </Button>
-                <br/>
-                <Button
-                  onClick={()=>addToWishlist(item._id)}
-                  className={`d-flex align-item-center m-auto border-0`}
-                >
-                  Add to wish list
-                </Button>
+                
+              
               </Card.Body>
             </Card>
          
@@ -140,7 +139,7 @@ try {
         </div>
         
       </Container>
-      <div style={{border:"none solid black", width:'100%',height:'20px',backgroundColor:'white'}}></div>
+      <div style={{border:"none solid black", width:'100%',height:'2px',backgroundColor:'white'}}></div>
       <Footer />
     </div>
   );
