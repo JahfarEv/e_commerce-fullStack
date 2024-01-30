@@ -63,8 +63,9 @@ const AddProduct = () => {
   };
 
   return (
+    
     <div className="d-flex ">
-      <Sidebar />
+      
       
       <div
         style={{
@@ -73,14 +74,14 @@ const AddProduct = () => {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height:"100vh",
+    height:"100%",
     
   }}
       >
       
         <h3
           style={{
-            // position: "relative",
+            position: "relative",
             top: "15px",
             color: "white",
             textAlign:"center",
