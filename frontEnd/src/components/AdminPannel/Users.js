@@ -25,7 +25,7 @@ const Users = () => {
   }, []);
 
   return (
-    <div style={{ display: "flex" }}>
+    <div>
       <Sidebar />
       <div  style={{
     flex: "1",
@@ -33,11 +33,12 @@ const Users = () => {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height:"100vh"
+    height:"100vh",
+    width:'250vh'
     
   }}>
-      <h1 style={{color:"white",marginTop:"10px",fontWeight:"bold"}}>Users Details</h1>
-      <div className="d-flex flex-column w-50 "z >
+      <h1 style={{color:"white",marginTop:"10px",fontWeight:"bold"}}>Users</h1>
+      <div className="d-flex flex-column w-50 " >
         <Table >
           <thead >
             <tr>

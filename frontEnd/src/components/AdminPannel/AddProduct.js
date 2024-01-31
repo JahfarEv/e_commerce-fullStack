@@ -64,7 +64,8 @@ const AddProduct = () => {
 
   return (
     
-    <div className="d-flex ">
+    <div >
+    <Sidebar/>
       
       
       <div
@@ -74,7 +75,7 @@ const AddProduct = () => {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height:"100%",
+    height:"100vh",
     
   }}
       >
