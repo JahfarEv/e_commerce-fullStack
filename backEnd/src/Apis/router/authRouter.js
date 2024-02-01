@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/register',(authController.signup))
 .post('/login',(authController.login))
+.post('/forget-password',(authController.forgetPassword))
 .get('/products',(authController.viewProducts))
 .get('/product-category/:slug',(authController.productByCategory))
 .post('/product-filters',(authController.productFilters))

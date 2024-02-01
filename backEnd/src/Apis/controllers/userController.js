@@ -1,7 +1,6 @@
 const User = require("../../model/userModel");
 const asyncErrorHandler = require("../../Utils/asyncErrorHandler");
 const jwt = require("jsonwebtoken");
-const customError = require("../../utils/customError");
 const product = require("../../model/productModel");
 const { default: mongoose } = require("mongoose");
 const cart = require("../../model/addToCart");
@@ -55,6 +54,31 @@ exports.login = asyncErrorHandler(async (req, res, next) => {
     user,
   });
 });
+
+//forget password
+
+exports.forgetPassword =async (req,res)=>{
+try {
+  const {email, answer, newPassword} = req.body
+  if(!email){
+    res.status(400).send({message:'email is requerd'})
+  }
+  if(!answer){
+    res.status(400).send({message:'answer is requerd'})
+  }
+  if(!newPassword){
+    res.status(400).send({message:'new passsword is requerd'})
+  }
+
+  const user = await User.find
+} catch (error) {
+  console.log(error);
+  res.status(500).json({
+    status:'error',
+    message:'Somthing went rong'
+  })
+}
+}
 
 //view products
 exports.viewProducts = asyncErrorHandler(async (req, res) => {

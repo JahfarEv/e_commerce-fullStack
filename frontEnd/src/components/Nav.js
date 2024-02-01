@@ -61,7 +61,11 @@ function NavScroll() {
             </Nav.Link>
 
             <Dropdown>
-              <Dropdown.Toggle variant="light" id="dropdown-basic">
+              <Dropdown.Toggle
+                variant="light"
+                id="dropdown-basic"
+                style={{ background: "none", border: "none", color: "white" }}
+              >
                 Categories
               </Dropdown.Toggle>
 
@@ -87,20 +91,20 @@ function NavScroll() {
             <Dropdown.Menu style={{ minWidth: 370 }}>
               <span style={{ padding: 10 }}>Cart is Empty!</span>
             </Dropdown.Menu>
-
+            <Nav.Link
+              onClick={() => navigate("/signup")}
+              style={{ color: "white" }}
+            >
+              Registration
+            </Nav.Link>
+            <Nav.Link variant="light" id="dropdown-basic" style={{background:"none",border:'none',color:'white'}} onClick={() => navigate("/signin")}>
+                Login
+              </Nav.Link>
+              {login?.user?.name}
             <Dropdown>
-              <Dropdown.Toggle variant="light" id="dropdown-basic">
-                Profile
-              </Dropdown.Toggle>
-
               <Dropdown.Menu>
                 Welcome
-                <Dropdown.Item onClick={() => navigate("/signin")}>
-                LogIn
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => navigate("/signup")}>
-                SignUp
-                </Dropdown.Item>
+                <Dropdown.Item>LogIn</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 

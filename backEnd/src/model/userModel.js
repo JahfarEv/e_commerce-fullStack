@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
       message: "password & confirm password does not match!",
     },
   },
+  answer:{
+    type:String,
+    required:true,
+  },
   wishlist:[{
     type:mongoose.Schema.ObjectId,ref:"product"
   }]
