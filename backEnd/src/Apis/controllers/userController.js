@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const product = require("../../model/productModel");
 const { default: mongoose } = require("mongoose");
 const cart = require("../../model/addToCart");
-const wishlist = require("../../model/wishList");
 const user = require("../../model/userModel");
 const { Stripe } = require("stripe");
 const orders = require("../../model/orderSchema");
@@ -70,7 +69,13 @@ try {
     res.status(400).send({message:'new passsword is requerd'})
   }
 
-  const user = await User.find
+  const user = await User.findOne((email,answer))
+  if(!user){
+    return res.status(404).json({
+      status:'error',
+      message:'Wrong email or answer'
+    })
+  }
 } catch (error) {
   console.log(error);
   res.status(500).json({
