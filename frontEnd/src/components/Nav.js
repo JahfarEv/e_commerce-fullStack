@@ -11,7 +11,7 @@ import "../components/Nav.css";
 import brand from "./Category/img/White logo - no background.png";
 import { useContext } from "react";
 import { shopContext } from "../App";
-import Login from "./Login";
+import Login from "../pages/users/Login";
 import useCategory from "../hooks/useCategory";
 import { Link } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -23,12 +23,13 @@ function NavScroll() {
   const categories = useCategory();
   const navigate = useNavigate();
   return (
-    <Navbar expand="lg" className=" hvr">
+    <Navbar expand="lg" className=" hvr shadow-lg sticky-top bg-light">
       <Container fluid>
         <Navbar.Brand
           className="a"
           onClick={() => navigate("/")}
-          style={{ color: "#F3DA99" }}
+          // style={{ color: "#F3DA99" }}
+          style={{ color: "white" }}
         >
           <img
             src={brand}
@@ -55,7 +56,7 @@ function NavScroll() {
             <Nav.Link
               className=" a "
               style={{ color: "white" }}
-              onClick={() => navigate("/all")}
+              onClick={() => navigate("/products")}
             >
               Products
             </Nav.Link>
@@ -70,8 +71,8 @@ function NavScroll() {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => navigate("/all")}>
-                  All categories
+                <Dropdown.Item onClick={() => navigate("/products")}>
+                  Products
                 </Dropdown.Item>
                 {categories.map((e) => (
                   <Dropdown.Item
@@ -86,7 +87,7 @@ function NavScroll() {
           <h5 style={{ color: "white", marginTop: "10px" }}>hi...{user}</h5>
           <Nav className="d-flex">
             <Nav.Link onClick={() => navigate("/cart")} title="cart">
-              <FaShoppingCart color="white" fontSize="25px" />
+              <FaShoppingCart color="black" fontSize="25px" />
             </Nav.Link>
             <Dropdown.Menu style={{ minWidth: 370 }}>
               <span style={{ padding: 10 }}>Cart is Empty!</span>
@@ -97,7 +98,7 @@ function NavScroll() {
             >
               Registration
             </Nav.Link>
-            <Nav.Link variant="light" id="dropdown-basic" style={{background:"none",border:'none',color:'white'}} onClick={() => navigate("/signin")}>
+            <Nav.Link variant="light" id="dropdown-basic" style={{background:"none",border:'none',color:'black'}} onClick={() => navigate("/signin")}>
                 Login
               </Nav.Link>
               {login?.user?.name}

@@ -6,16 +6,16 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Container from "react-bootstrap/esm/Container";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Axios, shopContext } from "../../App";
-import Nav from "../Nav";
+import Nav from "../../components/Nav";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import Footer from "../Footer";
+import Footer from "../../components/Footer";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FaRegHeart } from "react-icons/fa";
 
 const userId = localStorage.getItem('userId')
 
-const All = () => {
+const Products = () => {
   const [products,setProduct] = useState([])
   const navigate = useNavigate();
   const [searchItem, setSearchItem] = useState("");
@@ -29,7 +29,7 @@ useEffect(()=>{
 const response = await axios.get('http://127.0.0.1:4000/api/users/products');
 if(response.status === 200){
   setProduct(response.data.data.products);
-
+console.log(response);
 }
     }
     catch (error){
@@ -66,7 +66,7 @@ try {
   
 };
   return (
-    <div style={{ backgroundColor: "#3c0747" }}>
+    <div >
       <Nav />
       <div style={{border:"none solid black", width:'100%',height:'2px',backgroundColor:'white'}}></div>
 
@@ -145,4 +145,4 @@ try {
   );
 };
 
-export default All;
+export default Products;

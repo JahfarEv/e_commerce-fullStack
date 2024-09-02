@@ -12,6 +12,7 @@ const categorySchema = new mongoose.Schema({
         lowercase:true
     }
     
+    
 
 })
 const category =  mongoose.model("category",categorySchema)

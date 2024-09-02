@@ -4,7 +4,7 @@ const { default: mongoose } = require("mongoose");
 const product = require("../../model/productModel");
 const asyncErrorHandler = require("../../Utils/asyncErrorHandler");
 const categoryModel = require("../../model/categoryModel");
-const slugify = require('slug')
+const slugify = require("slug");
 
 const adminLogin = asyncErrorHandler(async (req, res) => {
   const { username, password } = req.body;
@@ -86,12 +86,12 @@ const createProduct = asyncErrorHandler(async (req, res) => {
   const { title, image, price, description, category } = req.body;
   const newProduct = await product.create({
     title,
-    Image: image,
+    Image: image,    
     price,
     description,
     category,
-    slug:slugify(title),
-    quantity:1
+    slug: slugify(title),
+    quantity: 1,
   });
   console.log(category.name);
   res.status(201).json({
@@ -105,7 +105,7 @@ const createProduct = asyncErrorHandler(async (req, res) => {
 //delete product
 
 const deleteProduct = asyncErrorHandler(async (req, res) => {
-  const {productId} = req.body;
+  const { productId } = req.body;
   console.log(productId);
 
   if (!productId || !mongoose.Types.ObjectId.isValid(productId)) {
@@ -132,17 +132,23 @@ const deleteProduct = asyncErrorHandler(async (req, res) => {
 // update products
 
 const updateProduct = asyncErrorHandler(async (req, res) => {
-  const {id} = req.params
-  const { title, image, price, description, category,name } = req.body;
-  const updateProduct = await product.findByIdAndUpdate(id,{
-    title,
-     image,
-    price,
-    description,
-    category,
-    quantity:1,
-    slug:slugify(name)
-  },{new:true}).save();
+  const { id } = req.params;
+  const { title, image, price, description, category, name } = req.body;
+  const updateProduct = await product
+    .findByIdAndUpdate(
+      id,
+      {
+        title,
+        image,
+        price,
+        description,
+        category,
+        quantity: 1,
+        slug: slugify(name),
+      },
+      { new: true }
+    )
+    .save();
   res.status(201).json({
     status: "sucess",
     data: {
@@ -153,121 +159,113 @@ const updateProduct = asyncErrorHandler(async (req, res) => {
 
 //create category
 
-const createCategory =asyncErrorHandler(async (req, res) => {
+const createCategory = asyncErrorHandler(async (req, res) => {
+  const { name } = req.body;
+  console.log(name);
+  if (!name) {
+    return res.status(401).json({
+      status: "error",
+      message: "Name is requeird",
+    });
+  }
+  const existingCategory = await categoryModel.findOne({ name });
+  if (existingCategory) {
+    return res.status(200).json({
+      status: "success",
+      message: "Category already exisits",
+    });
+  }
+  const category = await new categoryModel({
+    name,
+    slug: slugify(name),
+  }).save();
+  res.status(201).json({
+    status: "success",
+    message: "new category created",
+    data: {
+      category: category,
+    },
+  });
 
-    const {name} = req.body
-    console.log(name);
-    if(!name){
-      return res.status(401).json({
-        status:'error',
-        message:'Name is requeird'
-      })
-    }
-    const existingCategory = await categoryModel.findOne({name})
-    if(existingCategory){
-      return res.status(200).json({
-        status:'success',
-        message:'Category already exisits'
-      })
-    }
-    const category = await new categoryModel({name, slug:slugify(name)}).save()
-    res.status(201).json({
-      status:'success',
-      message:'new category created',
-      data:{
-        category:category
-      }
-    })
-  
-    
-    res.status(500).json({
-      status:'error',
-      message:'Error in category'
-    })
-  
-})
+  res.status(500).json({
+    status: "error",
+    message: "Error in category",
+  });
+});
 
 //get all category
 
-const categoryController =asyncErrorHandler (async(req,res)=>{
-
-  const category = await categoryModel.find({})
+const categoryController = asyncErrorHandler(async (req, res) => {
+  const category = await categoryModel.find({});
   res.status(200).json({
-    status:'success',
-    message:'all categories list',
-    data:{
-      category
-    }
-  })
+    status: "success",
+    message: "all categories list",
+    data: {
+      category,
+    },
+  });
 
   console.log(error);
   res.status(500).json({
-    status:'error',
-    message:'Error while getting all categories'
-  })
-}
-)
+    status: "error",
+    message: "Error while getting all categories",
+  });
+});
 //update category
-const updateCategory =asyncErrorHandler(async (req,res)=>{
-
-  const {name} = req.body
-  const {id} = req.params
-  const category = await categoryModel.findByIdAndUpdate(id,
-    {name, slug:slugify(name)},
-  {new:true});
-res.status(200).json({
-  status:'success',
-  message:'Category updated successfully',
-  category
-})
+const updateCategory = asyncErrorHandler(async (req, res) => {
+  const { name } = req.body;
+  const { id } = req.params;
+  const category = await categoryModel.findByIdAndUpdate(
+    id,
+    { name, slug: slugify(name) },
+    { new: true }
+  );
+  res.status(200).json({
+    status: "success",
+    message: "Category updated successfully",
+    category,
+  });
 
   res.status(500).json({
-    status:'error',
-    message:'Error while updating category'
-  })
-}
-)
+    status: "error",
+    message: "Error while updating category",
+  });
+});
 //single category
 
-const singleCategory = asyncErrorHandler(async(req,res)=>{
-
-  const category = await categoryModel.findOne({slug:req.params.slug})
+const singleCategory = asyncErrorHandler(async (req, res) => {
+  const category = await categoryModel.findOne({ slug: req.params.slug });
   res.status(200).json({
-    status:'success',
-    message:'get single category successfull',
-    data:category
-  })
-res.status(404).json({
-  status:'error',
-  message:'not found'
-})
-})
+    status: "success",
+    message: "get single category successfull",
+    data: category,
+  });
+  res.status(404).json({
+    status: "error",
+    message: "not found",
+  });
+});
 
 //delete category
-const deleteCategory =asyncErrorHandler(async (req,res)=>{
-
-  const {id} = req.params
-  await categoryModel.findByIdAndDelete(id)
+const deleteCategory = asyncErrorHandler(async (req, res) => {
+  const { id } = req.params;
+  await categoryModel.findByIdAndDelete(id);
   res.status(200).json({
-    status:'success',
-    message:'Category removed successfully'
-
-  })
+    status: "success",
+    message: "Category removed successfully",
+  });
 
   console.log(error);
   res.status(500).json({
-    status:'error',
-    message:'Category id not valid'
-  })
-
-})
-
+    status: "error",
+    message: "Category id not valid",
+  });
+});
 
 //view products
 
-const viewProduct = asyncErrorHandler (async (req,res)=>{
-
-  const products = await product.find({}).populate('category')
+const viewProduct = asyncErrorHandler(async (req, res) => {
+  const products = await product.find({}).populate("category");
   if (!products) {
     return res.status(404).json({
       status: "error",
@@ -281,13 +279,11 @@ const viewProduct = asyncErrorHandler (async (req,res)=>{
       products,
     },
   });
-
-})
+});
 
 //all products by category
 const allProduct = asyncErrorHandler(async (req, res, next) => {
-  
-  const productCategory = await product.find({slug:req.body.slug});
+  const productCategory = await product.find({ slug: req.body.slug });
   console.log(productCategory);
   if (!productCategory) {
     res.status(404).json({
@@ -313,7 +309,9 @@ const specificProduct = asyncErrorHandler(async (req, res) => {
   //     message: "invalid id",
   //   });
   // }
-  const productById = await product.findOne({slug:req.params.slug}).populate('category');
+  const productById = await product
+    .findOne({ slug: req.params.slug })
+    .populate("category");
   console.log(productById);
   if (!productById) {
     res.status(404).json({
@@ -343,5 +341,5 @@ module.exports = {
   categoryController,
   updateCategory,
   singleCategory,
-  deleteCategory
+  deleteCategory,
 };

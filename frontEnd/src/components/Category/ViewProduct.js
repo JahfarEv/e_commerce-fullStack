@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Nav from "../Nav";
 import Footer from "../Footer";
+import axios from "axios";
 
 const ViewProduct = () => {
   const naviagate = useNavigate();
@@ -20,8 +21,8 @@ const ViewProduct = () => {
   useEffect(() => {
     const viewProduct = async () => {
       try {
-        const response = await Axios.get(
-          `api/users/product/${id}`
+        const response = await axios.get(
+          `http://127.0.0.1:4000/api/users/product/${id}`
         );
         console.log(response);
         if (response.status === 200) {
@@ -40,12 +41,12 @@ const ViewProduct = () => {
   const handleClick = async () => {
     try{
       const response = await Axios.post(
-        `api/users/cart/${userId}`,
+        `http://127.0.0.1:4000/api/users/cart/${userId}`,
         { product: id }
       );
       
       if (response.status === 200) {
-        await Axios.get(`api/users/viewcart/${userId}`);
+        await Axios.get(`http://127.0.0.1:4000/api/users/viewcart/${userId}`);
        toast.success('Product added to cart')
        
       }
@@ -57,7 +58,7 @@ console.log(error);
   };
 
   return (
-    <div style={{ backgroundColor: "#3c0747" }}>
+    <div>
       <Nav />
       <div
         style={{

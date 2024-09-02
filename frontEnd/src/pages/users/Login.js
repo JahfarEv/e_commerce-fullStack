@@ -6,7 +6,7 @@ import Container from "react-bootstrap/esm/Container";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { MDBFooter, MDBContainer } from "mdb-react-ui-kit";
-import Brand from "../components/Category/img/Color logo - no background.png";
+import Brand from "../../components/Category/img/Color logo - no background.png";
 import axios from "axios";
 
 const Login = () => {

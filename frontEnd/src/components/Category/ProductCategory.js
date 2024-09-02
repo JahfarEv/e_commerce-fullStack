@@ -32,7 +32,7 @@ if(params?.slug) getProductsByCategory()
         }
     }
   return (
-    <div style={{ backgroundColor: "#3c0747",height:"100%" }}>
+    <div>
       <Nav/>
 
       <div style={{border:"none solid black", width:'100%',height:'2px',backgroundColor:'white'}}></div>

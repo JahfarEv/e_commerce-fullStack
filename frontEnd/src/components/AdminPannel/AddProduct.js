@@ -50,6 +50,7 @@ const AddProduct = () => {
 
       const response = await axios.post(
         "http://127.0.0.1:4000/api/admin/addProduct",
+        
         formData
       );
       if (response.status === 201) {
@@ -143,7 +144,7 @@ const AddProduct = () => {
              style={{marginLeft:"25%",marginRight:"25%"}}
               type="text"
               value={title}
-              placeholder="write a name"
+              placeholder="write a title"
               className="form-control"
               onChange={(e) => setTitle(e.target.value)}
             />

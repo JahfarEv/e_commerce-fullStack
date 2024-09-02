@@ -1,13 +1,13 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/esm/Container";
-import "../components/Category/Registration.css";
+import "../../components/Category/Registration.css";
 import { useContext, useRef, useState } from "react";
-import { shopContext } from "../App";
+import { shopContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import { MDBFooter, MDBContainer } from "mdb-react-ui-kit";
-import Brand from "./Category/img/Color logo - no background.png";
-import axios from "axios";
+import Brand from "../../components/Category/img/Color logo - no background.png";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Registration = () => {
   const navigate = useNavigate();

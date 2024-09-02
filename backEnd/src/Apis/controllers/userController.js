@@ -125,7 +125,7 @@ exports.productByCategory = async (req, res) => {
 
 // View a specific product
 
-exports.productById = asyncErrorHandler(async (req, res) => {
+exports.productById = asyncErrorHandler(async (req, res,next) => {
   const productId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(productId)) {
     res.status(404).json({
